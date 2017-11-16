@@ -1,1 +1,2 @@
-# gamego
+# GameGo
+# David, Luigi, Joshua
