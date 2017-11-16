@@ -1,0 +1,101 @@
+DROP DATABASE IF EXISTS GAMEGO;
+CREATE DATABASE GAMEGO;
+USE GAMEGO;
+
+DROP TABLE IF EXISTS Users;
+CREATE TABLE Users 
+(
+	uid INT PRIMARY KEY,
+	name varchar(50) NOT NULL,
+	age INT NOT NULL,
+	email varchar(50) NOT NULL UNIQUE,
+	password varchar(50) NOT NULL
+);
+DROP TABLE IF EXISTS Admins;
+CREATE TABLE Admins
+(
+	uid INT PRIMARY KEY,
+	name varchar(50) NOT NULL,
+	email varchar(50) NOT NULL UNIQUE,
+	password varchar(50) NOT NULL,
+	FOREIGN KEY (uid) 
+	REFERENCES users (uid)
+	ON DELETE CASCADE
+);
+DROP TABLE IF EXISTS Games;
+CREATE TABLE Games
+(
+	gid INT PRIMARY KEY,
+	title varchar(50) NOT NULL,
+	author varchar(50) NOT NULL,
+	genre varchar(50) NOT NULL,
+	console_type varchar(50) NOT NULL,
+	rating INT NOT NULL,
+	price DOUBLE NOT NULL,
+	stock INT NOT NULL
+);
+DROP TABLE IF EXISTS Consoles;
+CREATE TABLE Consoles
+(	cid INT PRIMARY KEY,
+	name VARCHAR(50) NOT NULL,
+	price DOUBLE(6, 2) NOT NULL,
+	stock INT NOT NULL
+);
+DROP TABLE IF EXISTS Memberships;
+CREATE TABLE Memberships
+(
+	mid INT PRIMARY KEY,
+	uid INT,
+	points INT NOT NULL,
+	FOREIGN KEY (uid) 
+	REFERENCES users (uid)
+	ON DELETE CASCADE
+);
+DROP TABLE IF EXISTS Rentals;
+CREATE TABLE Rentals
+(	rid INT PRIMARY KEY,
+	mid INT,
+	gid INT,
+	date_rented DATETIME NOT NULL,
+	date_due DATE NOT NULL,
+	FOREIGN KEY (gid) 
+	REFERENCES games (gid)
+	ON DELETE CASCADE
+);
+DROP TABLE IF EXISTS Preorders;
+CREATE TABLE Preorders
+(
+	pID INT PRIMARY KEY,
+	mid INT,
+	gid INT,
+	cid INT,
+	Date VARCHAR(50),
+	FOREIGN KEY (mid) 
+	REFERENCES memberships (mid)
+	ON DELETE CASCADE,
+	FOREIGN KEY (gid)
+	REFERENCES games (gid)
+	ON DELETE CASCADE,
+	FOREIGN KEY (cid)
+	REFERENCES consoles (cid)
+	ON DELETE CASCADE
+);
+DROP TABLE IF EXISTS Transactions;
+CREATE TABLE Transactions
+(
+	tid INT PRIMARY KEY,
+	uid INT,
+	gid INT,
+	cid INT,
+	price DOUBLE NOT NULL,
+	Date VARCHAR(50) NOT NULL,
+	FOREIGN KEY (uid) 
+	REFERENCES users (uid)
+	ON DELETE CASCADE,
+	FOREIGN KEY (gid)
+	REFERENCES games (gid)
+	ON DELETE CASCADE,
+	FOREIGN KEY (cid)
+	REFERENCES consoles (cid)
+	ON DELETE CASCADE
+);
