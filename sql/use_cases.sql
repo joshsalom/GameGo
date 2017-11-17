@@ -1,3 +1,6 @@
+### Some Test DATA: Tester Tim
+### INSERT INTO users VALUE(000, "Tester Tim", 100, "testertim@gmail.com", "testertim");
+### INSERT INTO memberships VALUE(0, 0, 10000);
 
 # Sign up for GameGo membership
 
@@ -11,6 +14,17 @@ WHERE email = "testertim@gmail.com";
 # Modifying member / membership
 
 # End membership
+DELETE
+FROM memberships 
+WHERE email = "testertim@gmail.com";
+
+DELETE
+FROM memberships 
+WHERE name = "Tester Tim";
+
+DELETE
+FROM memberships 
+WHERE mid = 0;
 
 # Search up member
 SELECT * 
