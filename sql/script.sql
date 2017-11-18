@@ -29,7 +29,7 @@ CREATE TABLE Games
 	title varchar(50) NOT NULL,
 	author varchar(50) NOT NULL,
 	genre varchar(50) NOT NULL,
-	console_type varchar(50) NOT NULL,
+	console varchar(50) NOT NULL,
 	rating INT NOT NULL,
 	price DOUBLE NOT NULL,
 	stock INT NOT NULL
