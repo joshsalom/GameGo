@@ -59,7 +59,7 @@ FROM Preorders;
 
 #update a title, genre, rating, price, etc
 UPDATE Games
-SET title = 'this tittle'
+SET title = 'this title'
 WHERE gid = 0;
 
 UPDATE Games
@@ -84,7 +84,7 @@ WHERE gid = 0;
 
 
 UPDATE Games
-SET title = 'this tittle', 
+SET title = 'this title', 
 author = 'this guy', 
 genre = FPS,
 rating = 5,
