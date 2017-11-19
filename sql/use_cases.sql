@@ -1,6 +1,14 @@
 ### Some Test DATA: Tester Tim
-### INSERT INTO users VALUE(000, "Tester Tim", 100, "testertim@gmail.com", "testertim");
-### INSERT INTO memberships VALUE(0, 0, 10000);
+-- INSERT INTO users VALUE(000, "Tester Tim", 100, "testertim@gmail.com", "testertim");
+-- INSERT INTO users VALUE(NULL, "Jester Jim", 50, "jesterjim@gmail.com", "jesterjim");
+-- INSERT INTO memberships VALUE(0, 1, 10000);
+-- insert into games values (null, 'Star Wars', 'EA Games', 'action', 'ps4', 5, 59.99, 50);
+-- insert into games values (null, 'League Of Legends', 'Riot Games', 'strategy', 'nintendoswitch', 5, 89.99, 25);
+-- insert into consoles values (null, 'ps4', 299.99, 40);
+-- insert into consoles values (null, 'nintendoswitch', 699.99, 10);
+
+### USEFUL FOR LATER
+-- select timestampadd(day, 7, (select date_rented from rentals where rid = 1));
 
 # Sign up for GameGo membership
 INSERT 
@@ -52,17 +60,33 @@ WHERE mid = "0";
 
 
 #Buy item
+insert into transactions values (null, 2, 1, null, (select price from games where gid=1), null);
+
+insert into transactions values (null, 2, null, 2, (select price from consoles where cid=2), null);
+
 
 #Rent/Loan item
+insert into rentals values (null, 1, 2, null, null);
 
-#Return item
+
+#Return rented item
+delete from rentals where mid=1 and gid=2;
 
 #Check stock count of item
+select stock from games where gid=1;
+select stock from consoles where cid=1;
 
 #Search by title genre, rating, price, console_type
+select * from games where genre = 'action';
+select * from games where rating > 3;
+select * from games where price < 70;
+select * from games where console_type = 'ps4';
+
+select * from consoles where price < 700;
+select * from consoles where stock > 0;
 
 #Search overdue items
-
+select * from rentals where timestampdiff(day, (select date_due from rentals), (select utc_timestamp())) > 7;
 
 #Count preorders
 SELECT COUNT(*)
