@@ -31,7 +31,7 @@ CREATE TABLE Games
 	genre varchar(50) NOT NULL,
 	console_type varchar(50) NOT NULL,
 	rating INT NOT NULL,
-	price DOUBLE NOT NULL,
+	price DOUBLE(6, 2) NOT NULL,
 	stock INT NOT NULL
 );
 DROP TABLE IF EXISTS Consoles;

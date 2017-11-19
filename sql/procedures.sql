@@ -1,3 +1,7 @@
+-- show procedure status where db = 'gamego';
+-- source procedures.sql
+USE GAMEGO;
+
 # Sign up for GameGo membership
 DROP PROCEDURE IF EXISTS createMember;
 
@@ -49,3 +53,99 @@ SELECT *
 FROM users NATURAL JOIN memberships 
 WHERE email = mEmail;
 
+#Buy game
+drop procedure if exists buyGame;
+create procedure buyGame(IN newUid INT, IN newGid INT)
+insert into transactions 
+values (null, newUid, newGid, null, (select price from games where games.gid=newGid), null);
+
+#Buy console
+drop procedure if exists buyConsole;
+create procedure buyConsole(IN newUid INT, IN newCid INT)
+insert into transactions 
+values (null, newUid, null, newCid, (select price from games where games.cid=newCid), null);
+
+
+#Rent/Loan item
+drop procedure if exists rentGame;
+create procedure rentGame(IN newMid INT, IN newGid INT)
+insert into rentals values (null, newMid, newGid, null, null);
+
+
+#Return rented item
+drop procedure if exists returnRentGame;
+create procedure returnRentGame(IN newMid INT, IN newGid INT)
+delete from rentals 
+where rentals.mid= newMid and rentals.gid=newGid;
+
+#Check stock count of game
+drop procedure if exists getGameStock;
+create procedure getGameStock(IN newTitle varchar(50), IN newAuthor varchar(50))
+select stock from games 
+where games.title=newTitle and games.author=newAuthor;
+
+#Check stock count of game
+drop procedure if exists getConsoleStock;
+create procedure getConsoleStock(IN newName varchar(50))
+select stock from consoles 
+where games.name=newName;
+
+#Search by title
+drop procedure if exists searchGamesByTitle;
+create procedure searchGamesByTitle(IN newTitle varchar(50))
+select * from games 
+where games.title = newTitle;
+
+#Search by author
+drop procedure if exists searchGamesByAuthor;
+create procedure searchGamesByAuthor(IN newAuthor varchar(50))
+select * from games 
+where games.author = newAuthor;
+
+#Search by genre
+drop procedure if exists searchGamesByGenre;
+create procedure searchGamesByGenre(IN newGenre varchar(50))
+select * from games 
+where games.genre = newGenre;
+
+#Search by rating
+drop procedure if exists searchGamesByRating;
+create procedure searchGamesByRating(IN newRating INT)
+select * from games 
+where games.rating > newRating;
+
+#Search by price less than input value
+drop procedure if exists searchGamesByPriceLessThan;
+create procedure searchGamesByPriceLessThan(IN newPrice DOUBLE(6, 2))
+select * from games 
+where games.price < newPrice;
+
+#Search by price greater than input value
+drop procedure if exists searchGamesByPriceGreaterThan;
+create procedure searchGamesByPriceGreaterThan(IN newPrice DOUBLE(6, 2))
+select * from games 
+where games.price > newPrice;
+
+#search by console_type
+drop procedure if exists searchGamesByConsoleType;
+create procedure searchGamesByConsoleType(IN newConsole varchar(50))
+select * from games 
+where games.console_type = newConsole;
+
+#Search console by price less than input value
+drop procedure if exists searchConsolesByPriceLessThan;
+create procedure searchConsolesByPriceLessThan(IN newPrice DOUBLE(6, 2))
+select * from consoles 
+where consoles.price < newPrice;
+
+#Search console by price greater than input value
+drop procedure if exists searchConsolesByPriceGreaterThan;
+create procedure searchConsolesByPriceGreaterThan(IN newPrice DOUBLE(6, 2))
+select * from consoles 
+where consoles.price > newPrice;
+
+#Search overdue items
+drop procedure if exists getOverdueRentals;
+create procedure getOverdueRentals(IN cutoffDays INT)
+select * from rentals 
+where timestampdiff(day, (select rentals.date_due from rentals), (select utc_timestamp())) > cutoffDays;
