@@ -3,15 +3,26 @@
 ### INSERT INTO memberships VALUE(0, 0, 10000);
 
 # Sign up for GameGo membership
+INSERT 
+INTO memberships(uid, points) 
+SELECT uid, 1000 
+FROM users 
+WHERE name = "Tester Tim";
 
 # Check GameGo Membership award points
 SELECT points 
 FROM users NATURAL JOIN memberships 
 WHERE email = "testertim@gmail.com";
 
-# Use GameGo Membership award points
+# Increment memebership points
+UPDATE memberships
+SET points = points + 100
+WHERE mid = 0;
 
-# Modifying member / membership
+#Decrement membership award points ( Use GameGo Membership award points )
+UPDATE memberships
+SET points = points - 100
+WHERE mid = 0;
 
 # End membership
 DELETE
