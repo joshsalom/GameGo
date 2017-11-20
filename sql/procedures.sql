@@ -55,15 +55,29 @@ WHERE email = mEmail;
 
 #Buy game
 drop procedure if exists buyGame;
+DELIMITER //
 create procedure buyGame(IN newUid INT, IN newGid INT)
+BEGIN
 insert into transactions 
-values (null, newUid, newGid, null, (select price from games where games.gid=newGid), null);
+values (null, newUid, newGid, null, -999.99, null);
+update transactions t1
+set price = (select price from games where games.gid=newGid)
+where t1.uid=newUid and t1.gid=newGid and price = -999.99;
+END //
+DELIMITER ;
 
 #Buy console
 drop procedure if exists buyConsole;
+DELIMITER //
 create procedure buyConsole(IN newUid INT, IN newCid INT)
+BEGIN
 insert into transactions 
-values (null, newUid, null, newCid, (select price from games where games.cid=newCid), null);
+values (null, newUid, null, newCid, -999.99, null);
+update transactions t1
+set price = (select price from consoles where consoles.cid=newCid)
+where t1.uid=newUid and t1.cid=newCid and price = -999.99;
+END //
+DELIMITER ;
 
 
 #Rent/Loan item
