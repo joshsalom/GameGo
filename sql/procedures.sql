@@ -1,16 +1,40 @@
 -- show procedure status where db = 'gamego';
 -- source procedures.sql
 USE GAMEGO;
+# Create user
+drop procedure if exists createUser;
+DELIMITER //
+create procedure createUser(IN newName varchar(50), IN newAge INT, IN newEmail varchar(50), IN newPassword varchar(50))
+BEGIN
+insert into users
+values (null, newName, newAge, newEmail, newPassword);
+select uid from users
+where users.email = newEmail and users.password = newPassword;
+END //
+DELIMITER ;
+
+#login user
+drop procedure if exists loginUser;
+create procedure loginUser(IN newEmail varchar(50), IN newPassword varchar(50))
+select users.uid from users
+where users.email = newEmail and users.password = newPassword;
 
 # Sign up for GameGo membership
 DROP PROCEDURE IF EXISTS createMember;
 
-CREATE PROCEDURE createMember(IN mEmail VARCHAR(50))
-INSERT 
-INTO memberships(uid, points) 
+DELIMITER //
+CREATE PROCEDURE createMember(IN mEmail VARCHAR(50), IN newPassword varchar(50))
+BEGIN
+INSERT INTO memberships(uid, points) 
 SELECT uid, 1000 
 FROM users 
-WHERE email = mEmail;
+WHERE email = mEmail and password = newPassword;
+
+SELECT mid
+from memberships natural join users
+where email = mEmail and password = newPassword;
+END //
+DELIMITER ;
 
 # Check GameGo Membership award points
 DROP PROCEDURE IF EXISTS getMemberPoints;
@@ -63,6 +87,8 @@ values (null, newUid, newGid, null, -999.99, null);
 update transactions t1
 set price = (select price from games where games.gid=newGid)
 where t1.uid=newUid and t1.gid=newGid and price = -999.99;
+select * from games
+where gid = newGid;
 END //
 DELIMITER ;
 
@@ -103,6 +129,42 @@ drop procedure if exists getConsoleStock;
 create procedure getConsoleStock(IN newName varchar(50))
 select stock from consoles 
 where games.name=newName;
+
+#View games by ascending order of title
+drop procedure if exists viewGamesByTitle;
+create procedure viewGamesByTitle()
+select * from games
+order by title asc;
+
+#View games by ascending author
+drop procedure if exists viewGamesByAuthor;
+create procedure viewGamesByAuthor()
+select * from games
+order by author asc;
+
+#View games by ascending genre
+drop procedure if exists viewGamesByGenre;
+create procedure viewGamesByGenre()
+select * from games
+order by genre asc;
+
+#view games by ascending console
+drop procedure if exists viewGamesByConsole;
+create procedure viewGamesByConsole()
+select * from games
+order by console_type asc;
+
+#view games by rating
+drop procedure if exists viewGamesByRating;
+create procedure viewGamesByRating()
+select * from games
+order by rating desc;
+
+#view games by price
+drop procedure if exists viewGamesByPrice;
+create procedure viewGamesByPrice()
+select * from games
+order by price asc;
 
 #Search by title
 drop procedure if exists searchGamesByTitle;
