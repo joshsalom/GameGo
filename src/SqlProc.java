@@ -117,6 +117,7 @@ public class SqlProc {
 	    return -1;
 	}
     }
+    
     public String rentGame(int uid, int gid) {
 	try {
 	    CallableStatement cs = conn.prepareCall("{CALL rentGame(?, ?)}");

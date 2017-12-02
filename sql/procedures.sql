@@ -39,10 +39,10 @@ DELIMITER ;
 # Check GameGo Membership award points
 DROP PROCEDURE IF EXISTS getMemberPoints;
 
-CREATE PROCEDURE getMemberPoints(IN mEmail VARCHAR(50))
+CREATE PROCEDURE getMemberPoints(IN memberID INT)
 SELECT points
-FROM users NATURAL JOIN memberships
-WHERE email = mEmail;
+FROM memberships
+WHERE mid = memberID;
 
 # Increment memebership points
 DROP PROCEDURE IF EXISTS addMemberPoints;

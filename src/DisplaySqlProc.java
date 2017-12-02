@@ -295,4 +295,27 @@ public class DisplaySqlProc {
 	    return null;
 	}
     }
+    /****** MEMBERSHIP DISPLAYS *********************************************************/
+    
+    public String viewMemberPoints(int mid) {
+	try {
+	    CallableStatement cs = conn.prepareCall("{CALL getMemberPoints(?)}");
+	    cs.setInt(1, mid);
+	    boolean hasResults = cs.execute();
+	    while (hasResults) {
+		ResultSet rs = cs.getResultSet();
+		while (rs.next()) {
+		    return "Availible Points: " + rs.getInt("points");
+		}
+		hasResults = cs.getMoreResults();
+	    }
+	    return "Availible Points: 0";
+	} catch (Exception e) {
+	    // e.printStackTrace();
+	    return "ERR";
+	}
+
+    }
+    /****** END MEMBERSHIP DISPLAYS ******************************************************/
+    
 }

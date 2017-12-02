@@ -174,7 +174,7 @@ public class Main {
 
 	    switch (choice.toLowerCase()) {
 	    case "1":
-		System.out.println("Awaiting Implementation");
+		System.out.println(displaySqlProc.viewMemberPoints(currentMemberId));
 		break;
 	    case "2":
 		System.out.println("Awaiting Implementation");
