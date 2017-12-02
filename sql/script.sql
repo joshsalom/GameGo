@@ -107,3 +107,12 @@ CREATE TABLE Sales
 	FOREIGN KEY (gid)
 	REFERENCES games (gid)
 );
+
+# Create Default Admin
+INSERT 
+INTO users(name, age, email, password) 
+VALUE("admin", 100, "gamegoadmin@gmail.com", "admin");
+
+INSERT
+INTO admins
+VALUE(1, "admin", 100, "gamegoadmin@gmail.com", "admin");
