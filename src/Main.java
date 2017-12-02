@@ -121,7 +121,7 @@ public class Main {
 		if (currentMemberId == -1) {
 		    createMemberMenu();
 		} else {
-		    System.out.println("sup i'm a member");
+		    memberMenu();
 		}
 		break;
 	    case "4":
@@ -153,6 +153,45 @@ public class Main {
 	    } else {
 		System.out.println("Oops, incorrect credentials when trying to become member.");
 		return;
+	    }
+
+	}
+    }
+    
+    public static void memberMenu() {
+	while (true) {
+	    System.out.println("Membership Menu");
+	    System.out.println("Enter a key value to proceed:");
+	    System.out.println("[1] Check Points");
+	    System.out.println("[2] Buy Prize");
+	    System.out.println("[3] Check Rentals");
+	    System.out.println("[4] Return Rentals");
+	    System.out.println("[5] End Membership");
+	    System.out.println("[Q] Go back");
+	    
+	    String choice = scanner.nextLine();
+	    System.out.println(wipe);
+
+	    switch (choice.toLowerCase()) {
+	    case "1":
+		System.out.println("Awaiting Implementation");
+		break;
+	    case "2":
+		System.out.println("Awaiting Implementation");
+		break;
+	    case "3":
+		System.out.println("Awaiting Implementation");
+		break;
+	    case "4":
+		System.out.println("Awaiting Implementation");
+		break;
+	    case "5":
+		System.out.println("Awaiting Implementation");
+		break;
+	    case "q":
+		return;
+	    default:
+		System.out.println("Invalid input, try again.");
 	    }
 
 	}
@@ -495,5 +534,73 @@ public class Main {
     
     public static void viewMyTransactions() {
 	displaySqlProc.viewTransactionsById(currentUserId);
+    }
+    
+    /****** ADMIN SPECIFIC MENUES **********************************************************************************/
+    
+    public static void admin_memberMenu() {
+	while (true) {
+	    System.out.println("ADMIN Membership Menu");
+	    System.out.println("Enter a key value to proceed:");
+	    System.out.println("[1] List all members");
+	    System.out.println("[2] Search for member by email");
+	    System.out.println("[Q] Go back");
+	    
+	    String choice = scanner.nextLine();
+	    System.out.println(wipe);
+
+	    switch (choice.toLowerCase()) {
+	    case "1":
+		System.out.println("Awaiting Implementation");
+		break;
+	    case "2":
+		System.out.println("Awaiting Implementation");
+		break;
+	    case "q":
+		return;
+	    default:
+		System.out.println("Invalid input, try again.");
+	    }
+
+	}
+    }
+    
+    public static void admin_transactionsMenu() {
+	while (true) {
+	    System.out.println("ADMIN Transactions Menu");
+	    System.out.println("Enter a key value to proceed:");
+	    System.out.println("[1] List all Transactions");
+	    System.out.println("[2] Search transactions by user");
+	    System.out.println("[3] Search transactions by game");
+	    System.out.println("[4] Search transactions by console");
+	    System.out.println("[5] Net Gross of Transactions");
+	    System.out.println("[Q] Go back");
+	    
+	    String choice = scanner.nextLine();
+	    System.out.println(wipe);
+
+	    switch (choice.toLowerCase()) {
+	    case "1":
+		System.out.println("Awaiting Implementation");
+		break;
+	    case "2":
+		System.out.println("Awaiting Implementation");
+		break;
+	    case "3":
+		System.out.println("Awaiting Implementation");
+		break;
+	    case "4":
+		System.out.println("Awaiting Implementation");
+		break;
+	    case "5":
+		System.out.println("Awaiting Implementation");
+		break;
+	    case "q":
+		return;
+	    default:
+		System.out.println("Invalid input, try again.");
+	    }
+
+	}
     }
 }

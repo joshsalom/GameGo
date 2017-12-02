@@ -73,10 +73,10 @@ INTO consoles
 VALUES (6, "Nintendo Switch", 299.99, 10);
 
 INSERT
-INTO sales(gid, discount)
-SELECT gid, 10.00
+INTO sales(gid, discount, originalPrice)
+SELECT gid, (price * 0.15), price
 FROM games
-WHERE price > 49;
+WHERE price > 45.00;
 
 INSERT 
 INTO memberships(uid, points) 
