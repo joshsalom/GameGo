@@ -15,6 +15,18 @@ BEGIN
 END//
 DELIMITER ;
 
+DROP TRIGGER IF EXISTS afterDeleteRentalInc;
+DELIMITER //
+CREATE TRIGGER afterDeleteRentalInc
+AFTER DELETE ON Rentals
+FOR EACH ROW    
+BEGIN
+    UPDATE games
+    SET stock = stock + 1
+    WHERE games.gid = OLD.gid;
+END//
+DELIMITER ;
+
 DROP TRIGGER IF EXISTS afterInsertTransactionGameDec;
 DELIMITER //
 CREATE TRIGGER afterInsertTransactionGameDec

@@ -56,6 +56,7 @@ CREATE TABLE Rentals
 (	rid INT PRIMARY KEY AUTO_INCREMENT,
 	mid INT,
 	gid INT,
+	price DOUBLE NOT NULL,
 	date_rented TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	date_due TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	FOREIGN KEY (gid) 
@@ -104,10 +105,10 @@ CREATE TABLE Sales
 (
 	gid INT PRIMARY KEY,
 	discount DOUBLE(6, 2) NOT NULL,
+	originalPrice DOUBLE(6, 2) NOT NULL,
 	FOREIGN KEY (gid)
 	REFERENCES games (gid)
 );
-
 # Create Default Admin
 INSERT 
 INTO users(name, age, email, password) 

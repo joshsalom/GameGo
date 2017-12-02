@@ -77,6 +77,12 @@ SELECT *
 FROM users NATURAL JOIN memberships 
 WHERE email = mEmail;
 
+#get member by uid
+drop procedure if exists getMemberId;
+create procedure getMemberId(IN newUid INT)
+select * from memberships
+where uid = newUid;
+
 #Buy game
 drop procedure if exists buyGame;
 DELIMITER //
@@ -102,21 +108,38 @@ values (null, newUid, null, newCid, -999.99, null);
 update transactions t1
 set price = (select price from consoles where consoles.cid=newCid)
 where t1.uid=newUid and t1.cid=newCid and price = -999.99;
+select * from consoles
+where cid = newCid;
 END //
 DELIMITER ;
 
 
 #Rent/Loan item
 drop procedure if exists rentGame;
+DELIMITER //
 create procedure rentGame(IN newMid INT, IN newGid INT)
-insert into rentals values (null, newMid, newGid, null, null);
-
+BEGIN
+insert into rentals 
+values (null, newMid, newGid, -999.99, null, null);
+update rentals r1
+set price = (select price from games where games.gid=newGid)
+where r1.mid=newMid and r1.gid=newGid and price=-999.99;
+select * from games
+where gid = newGid;
+END //
+DELIMITER ;
 
 #Return rented item
-drop procedure if exists returnRentGame;
-create procedure returnRentGame(IN newMid INT, IN newGid INT)
+drop procedure if exists returnGameRental;
+DELIMITER //
+create procedure returnGameRental(IN newMid INT, IN newGid INT)
+BEGIN
 delete from rentals 
 where rentals.mid= newMid and rentals.gid=newGid;
+select * from games
+where gid = newGid;
+END //
+DELIMITER ;
 
 #Check stock count of game
 drop procedure if exists getGameStock;
@@ -170,25 +193,31 @@ order by price asc;
 drop procedure if exists searchGamesByTitle;
 create procedure searchGamesByTitle(IN newTitle varchar(50))
 select * from games 
-where games.title = newTitle;
+where games.title LIKE CONCAT('%', newTitle, '%');
 
 #Search by author
 drop procedure if exists searchGamesByAuthor;
 create procedure searchGamesByAuthor(IN newAuthor varchar(50))
 select * from games 
-where games.author = newAuthor;
+where games.author LIKE CONCAT('%', newAuthor, '%');
 
 #Search by genre
 drop procedure if exists searchGamesByGenre;
 create procedure searchGamesByGenre(IN newGenre varchar(50))
 select * from games 
-where games.genre = newGenre;
+where games.genre LIKE CONCAT('%', newGenre, '%');
 
 #Search by rating
-drop procedure if exists searchGamesByRating;
-create procedure searchGamesByRating(IN newRating INT)
+drop procedure if exists searchGamesByRatingGreaterThan;
+create procedure searchGamesByRatingGreaterThan(IN newRating INT)
 select * from games 
 where games.rating > newRating;
+
+#Search by rating
+drop procedure if exists searchGamesByRatingLessThan;
+create procedure searchGamesByRatingLessThan(IN newRating INT)
+select * from games 
+where games.rating < newRating;
 
 #Search by price less than input value
 drop procedure if exists searchGamesByPriceLessThan;
@@ -203,10 +232,10 @@ select * from games
 where games.price > newPrice;
 
 #search by console_type
-drop procedure if exists searchGamesByConsoleType;
-create procedure searchGamesByConsoleType(IN newConsole varchar(50))
+drop procedure if exists searchGamesByConsole;
+create procedure searchGamesByConsole(IN newConsole varchar(50))
 select * from games 
-where games.console_type = newConsole;
+where games.console_type LIKE CONCAT('%', newConsole, '%');
 
 #Search console by price less than input value
 drop procedure if exists searchConsolesByPriceLessThan;
@@ -225,3 +254,35 @@ drop procedure if exists getOverdueRentals;
 create procedure getOverdueRentals(IN cutoffDays INT)
 select * from rentals 
 where timestampdiff(day, (select rentals.date_due from rentals), (select utc_timestamp())) > cutoffDays;
+
+#view transactions by uid
+drop procedure if exists viewGameTransactionsById;
+create procedure viewGameTransactionsById(IN newId INT)
+select * from transactions natural join games
+where uid = newId
+order by date asc;
+
+#view transactions by uid
+drop procedure if exists viewConsoleTransactionsById;
+create procedure viewConsoleTransactionsById(IN newId INT)
+select * from transactions natural join consoles
+where uid = newId
+order by date asc;
+
+#View consoles by console's name
+drop procedure if exists viewConsolesByName;
+create procedure viewConsolesByName()
+select * from consoles
+order by name asc;
+
+#view consoles by price
+drop procedure if exists viewConsolesByPrice;
+create procedure viewConsolesByPrice()
+select * from consoles
+order by price asc;
+
+#view games on sale
+drop procedure if exists viewGamesOnSale;
+create procedure viewGamesOnSale()
+select * from games natural join sales
+order by price asc;

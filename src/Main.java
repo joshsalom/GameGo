@@ -2,6 +2,7 @@ import java.util.*;
 
 public class Main {
     private static int currentUserId;
+    private static int currentMemberId;
     private static SqlProc sqlProc;
     private static DisplaySqlProc displaySqlProc;
     private static Scanner scanner;
@@ -14,19 +15,23 @@ public class Main {
 	while (true) {
 	    System.out.println("Welcome to GameGo!");
 	    System.out.println("Enter a key value to proceed:");
-	    System.out.println("[C] Create new user account");
-	    System.out.println("[L] Login existing user");
+	    System.out.println("[1] Create new user account");
+	    System.out.println("[2] Login existing user");
+	    System.out.println("[3] Login existing admin");
 	    System.out.println("[Q] Quit");
 
 	    String choice = scanner.nextLine();
 	    System.out.println(wipe);
 
 	    switch (choice.toLowerCase()) {
-	    case "c":
+	    case "1":
 		createUserMenu();
 		break;
-	    case "l":
+	    case "2":
 		loginUserMenu();
+		break;
+	    case "3":
+		//TODO: loginAdminMenu();
 		break;
 	    case "q":
 		System.out.println("Goodbyes from GameGo!");
@@ -88,23 +93,39 @@ public class Main {
     }
 
     public static void userMenu() {
+	currentMemberId = sqlProc.getMemberId(currentUserId);
 	while (true) {
 	    System.out.println("Welcome user!");
 	    System.out.println("Enter a key value to proceed:");
-	    System.out.println("[M] Become a member");
-	    System.out.println("[G] View games");
-	    System.out.println("[C] View consoles");
+	    System.out.println("[1] Browse games");
+	    System.out.println("[2] Browse consoles");
+	    if (currentMemberId == -1) {
+		 System.out.println("[3] Sign up for GameGo membership");
+	    } else {
+		 System.out.println("[3] Membership Exclusives");
+	    }
+	    System.out.println("[4] View purchase history");
 	    System.out.println("[Q] Log out");
 
 	    String choice = scanner.nextLine();
 	    System.out.println(wipe);
 
 	    switch (choice.toLowerCase()) {
-	    case "m":
-		createMemberMenu();
+	    case "1":
+		browseGamesMenu();
 		break;
-	    case "g":
-		viewGamesMenu();
+	    case "2":
+		browseConsolesMenu();
+		break;
+	    case "3":
+		if (currentMemberId == -1) {
+		    createMemberMenu();
+		} else {
+		    System.out.println("sup i'm a member");
+		}
+		break;
+	    case "4":
+		viewMyTransactions();
 		break;
 	    case "q":
 		System.out.println("You've recently logged out.");
@@ -136,18 +157,46 @@ public class Main {
 
 	}
     }
+    
+    public static void browseGamesMenu() {
+	while (true) {
+	    System.out.println("Browse Games Menu");
+	    System.out.println("Enter a key value to proceed:");
+	    System.out.println("[1] View game listing");
+	    System.out.println("[2] Search for game");
+	    System.out.println("[3] View games on sale");
+	    System.out.println("[Q] Go back");
+
+	    String choice = scanner.nextLine();
+	    System.out.println(wipe);
+
+	    switch (choice.toLowerCase()) {
+	    case "1":
+		viewGamesMenu();
+		break;
+	    case "2":
+		searchGamesMenu();
+		break;
+	    case "3":
+		ArrayList<String> gameList = displaySqlProc.viewGamesOnSale();
+		printItemList(gameList);
+		break;
+	    case "q":
+		return;
+	    default:
+		System.out.println("Invalid input, try again.");
+	    }
+	}
+    }
 
     public static void viewGamesMenu() {
 	while (true) {
 	    System.out.println("View Games Menu");
 	    System.out.println("Enter a key value to proceed:");
-	    System.out.println("[T] View games sorted by title");
-	    System.out.println("[A] View games sorted by author");
-	    System.out.println("[G] View games sorted by genre");
-	    System.out.println("[C] View games sorted by console");
-	    System.out.println("[R] View games sorted by rating");
-	    System.out.println("[P] View games sorted by price");
+	    System.out.println("View games sorted by..");
+	    System.out.println("[1]title, [2]author, [3]genre, [4]console, [5]rating, [6]price");
 	    System.out.println("[B] Buy game");
+	    System.out.println("[R] Rent game (GameGo Members Only)");
 	    System.out.println("[Q] Go back");
 
 	    String choice = scanner.nextLine();
@@ -155,25 +204,33 @@ public class Main {
 	    ArrayList<String> gameList = new ArrayList<String>();
 
 	    switch (choice.toLowerCase()) {
-	    case "t":
+	    case "1":
 		gameList = displaySqlProc.viewGames("title");
+		printItemList(gameList);
 		break;
-	    case "a":
+	    case "2":
 		gameList = displaySqlProc.viewGames("author");
+		printItemList(gameList);
 		break;
-	    case "g":
+	    case "3":
 		gameList = displaySqlProc.viewGames("genre");
+		printItemList(gameList);
 		break;
-	    case "c":
+	    case "4":
 		gameList = displaySqlProc.viewGames("console");
+		printItemList(gameList);
 		break;
-	    case "r":
+	    case "5":
 		gameList = displaySqlProc.viewGames("rating");
+		printItemList(gameList);
 		break;
-	    case "p":
+	    case "6":
 		gameList = displaySqlProc.viewGames("price");
+		printItemList(gameList);
 		break;
 	    case "b":
+		gameList = displaySqlProc.viewGames("title");
+		printItemList(gameList);
 		System.out.println("Enter the game's ID to purchase the game.");
 		System.out.println("Or, press [Q] to go back.");
 		String gidString = scanner.nextLine();
@@ -186,18 +243,257 @@ public class Main {
 		    System.out.println(result);
 		}
 		break;
+	    case "r":
+		gameList = displaySqlProc.viewGames("title");
+		printItemList(gameList);
+		System.out.println("Enter the game's ID to rent the game.");
+		System.out.println("Or, press [Q] to go back.");
+		String gidRentString = scanner.nextLine();
+		System.out.println(wipe);
+		if (gidRentString.toLowerCase().equals("q")) {
+		    break;
+		} else {
+		    int gidInt = Integer.parseInt(gidRentString);
+		    String result = sqlProc.rentGame(currentUserId, gidInt);
+		    System.out.println(result);
+		}
+		break;
 	    case "q":
 		return;
 	    default:
 		System.out.println("Invalid input, try again.");
 	    }
-	    printGameList(gameList);
+	}
+    }
+    
+    public static void browseConsolesMenu() {
+	while (true) {
+	    System.out.println("Browse Consoles Menu");
+	    System.out.println("Enter a key value to proceed:");
+	    System.out.println("[1] View all consoles by title");
+	    System.out.println("[2] View all consoles by price");
+	    System.out.println("[B] Buy");
+	    System.out.println("[Q] Go back");
+
+	    String choice = scanner.nextLine();
+	    System.out.println(wipe);
+	    
+	    ArrayList<String> consoleList = new ArrayList<String>();
+	    
+	    switch (choice.toLowerCase()) {
+	    case "1":
+		consoleList = displaySqlProc.viewConsoles("name");
+		printItemList(consoleList);
+		break;
+	    case "2":
+		consoleList = displaySqlProc.viewConsoles("price");
+		printItemList(consoleList);
+		break;
+	    case "b":
+		consoleList = displaySqlProc.viewConsoles("name");
+		printItemList(consoleList);
+		System.out.println("Enter the console's ID to purchase the game.");
+		System.out.println("Or, press [Q] to go back.");
+		String cidString = scanner.nextLine();
+		System.out.println(wipe);
+		if (cidString.toLowerCase().equals("q")) {
+		    break;
+		} else {
+		    int cidInt = Integer.parseInt(cidString);
+		    String result = sqlProc.buyConsole(currentUserId, cidInt);
+		    System.out.println(result);
+		}
+		break;
+	    case "q":
+		return;
+	    default:
+		System.out.println("Invalid input, try again.");
+	    }
 	}
     }
 
-    public static void printGameList(ArrayList<String> gameList) {
-	for (String listing : gameList) {
+    public static void searchGamesMenu() {
+	while (true) {
+	    System.out.println("View Games Menu");
+	    System.out.println("Enter a key value to proceed:");
+	    System.out.println("Search by..");
+	    System.out.println("[1]title, [2]author, [3]genre, [4]console");
+	    System.out.println("[5]rating (Less Than), [6]rating (Greater Than)");
+	    System.out.println("[7]price (Less Than), [8]price (Greater Than)");
+	    System.out.println("[B] Buy game");
+	    System.out.println("[R] Rent game (GameGo Members Only)");
+	    System.out.println("[Q] Go back");
+
+	    System.out.println("Categorical search:");
+	    String choice = scanner.nextLine();
+	    System.out.println(wipe);
+	    ArrayList<String> gameList = new ArrayList<String>();
+	    
+	    switch (choice.toLowerCase()) {
+	    case "1":
+		searchGamesByTitleMenu();
+		break;
+	    case "2":
+		searchGamesByAuthorMenu();
+		break;
+	    case "3":
+		searchGamesByGenreMenu();
+		break;
+	    case "4":
+		searchGamesByConsoleMenu();
+		break;
+	    case "5":
+		searchGamesByRatingMenu("LessThan");
+		break;
+	    case "6":
+		searchGamesByRatingMenu("GreaterThan");
+		break;
+	    case "7":
+		searchGamesByPriceMenu("LessThan");
+		break;
+	    case "8":
+		searchGamesByPriceMenu("GreaterThan");
+		break;
+	    case "b":
+		gameList = displaySqlProc.viewGames("title");
+		printItemList(gameList);
+		System.out.println("Enter the game's ID to purchase the game.");
+		System.out.println("Or, press [Q] to go back.");
+		String gidString = scanner.nextLine();
+		System.out.println(wipe);
+		if (gidString.toLowerCase().equals("q")) {
+		    break;
+		} else {
+		    int gidInt = Integer.parseInt(gidString);
+		    String result = sqlProc.buyGame(currentUserId, gidInt);
+		    System.out.println(result);
+		}
+		break;
+	    case "r":
+		gameList = displaySqlProc.viewGames("title");
+		printItemList(gameList);
+		System.out.println("Enter the game's ID to rent the game.");
+		System.out.println("Or, press [Q] to go back.");
+		String gidRentString = scanner.nextLine();
+		System.out.println(wipe);
+		if (gidRentString.toLowerCase().equals("q")) {
+		    break;
+		} else {
+		    int gidInt = Integer.parseInt(gidRentString);
+		    String result = sqlProc.rentGame(currentUserId, gidInt);
+		    System.out.println(result);
+		}
+		break;
+	    case "q":
+		return;
+	    default:
+		System.out.println("Invalid input, try again.");
+	    }
+	}
+    }
+    
+    public static void searchGamesByTitleMenu() {
+	while (true) {
+	    System.out.println("Enter the game's title or type !q to go back:");
+	    String input = scanner.nextLine();
+	    System.out.println(wipe);
+	    
+	    switch (input.toLowerCase()) {
+	    case "!q":
+		return;
+	    default: 
+		ArrayList<String> gameList = displaySqlProc.searchGamesString("title", input);
+		printItemList(gameList);
+	    }
+	}
+    }
+    
+    public static void searchGamesByAuthorMenu() {
+	while (true) {
+	    System.out.println("Enter the game's author or type !q to go back:");
+	    String input = scanner.nextLine();
+	    System.out.println(wipe);
+	    
+	    switch (input.toLowerCase()) {
+	    case "!q":
+		return;
+	    default: 
+		ArrayList<String> gameList = displaySqlProc.searchGamesString("author", input);
+		printItemList(gameList);
+	    }
+	}
+    }
+
+    public static void searchGamesByGenreMenu() {
+	while (true) {
+	    System.out.println("Enter the game's genre or type !q to go back:");
+	    String input = scanner.nextLine();
+	    System.out.println(wipe);
+	    
+	    switch (input.toLowerCase()) {
+	    case "!q":
+		return;
+	    default: 
+		ArrayList<String> gameList = displaySqlProc.searchGamesString("genre", input);
+		printItemList(gameList);
+	    }
+	}
+    }
+    public static void searchGamesByConsoleMenu() {
+	while (true) {
+	    System.out.println("Enter the game's console or type !q to go back:");
+	    String input = scanner.nextLine();
+	    System.out.println(wipe);
+	    
+	    switch (input.toLowerCase()) {
+	    case "!q":
+		return;
+	    default: 
+		ArrayList<String> gameList = displaySqlProc.searchGamesString("console", input);
+		printItemList(gameList);
+	    }
+	}
+    }
+    public static void searchGamesByRatingMenu(String lessOrGreat) {
+	while (true) {
+	    System.out.println("Enter a rating of 1-5 or type !q to go back:");
+	    String input = scanner.nextLine();
+	    System.out.println(wipe);
+	    
+	    switch (input.toLowerCase()) {
+	    case "!q":
+		return;
+	    default: 
+		int inputInt = Integer.parseInt(input);
+		ArrayList<String> gameList = displaySqlProc.searchGamesByRating(lessOrGreat, inputInt);
+		printItemList(gameList);
+	    }
+	}
+    }
+    public static void searchGamesByPriceMenu(String lessOrGreat) {
+	while (true) {
+	    System.out.println("Enter a price or type !q to go back:");
+	    String input = scanner.nextLine();
+	    System.out.println(wipe);
+	    
+	    switch (input.toLowerCase()) {
+	    case "!q":
+		return;
+	    default: 
+		double inputDouble = Double.parseDouble(input);
+		ArrayList<String> gameList = displaySqlProc.searchGamesByPrice(lessOrGreat, inputDouble);
+		printItemList(gameList);
+	    }
+	}
+    }
+    
+    public static void printItemList(ArrayList<String> itemList) {
+	for (String listing : itemList) {
 	    System.out.println(listing);
 	}
+    }
+    
+    public static void viewMyTransactions() {
+	displaySqlProc.viewTransactionsById(currentUserId);
     }
 }
