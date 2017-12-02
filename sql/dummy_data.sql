@@ -72,8 +72,26 @@ INSERT
 INTO consoles
 VALUES (6, "Nintendo Switch", 299.99, 10);
 
+INSERT
+INTO sales(gid, discount)
+SELECT gid, 10.00
+FROM games
+WHERE price > 49;
+
 INSERT 
 INTO memberships(uid, points) 
 SELECT uid, 1010 
 FROM users 
-WHERE name = "R.O.B";
+WHERE name = "R.O.B." or name = "Charizard";
+
+INSERT
+INTO transactions(uid, gid, price)
+SELECT uid, gid, price
+FROM users, games
+WHERE name = "R.O.B." and author = "Nintendo";
+
+INSERT
+INTO rentals(mid, gid, date_due)
+SELECT mid, gid, '2018-12-31 23:59:59'
+FROM users natural join memberships, games
+WHERE name = "Charizard" and NOT (author = "Nintendo");

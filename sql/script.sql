@@ -115,4 +115,4 @@ VALUE("admin", 100, "gamegoadmin@gmail.com", "admin");
 
 INSERT
 INTO admins
-VALUE(1, "admin", 100, "gamegoadmin@gmail.com", "admin");
+VALUE(1, "admin", "gamegoadmin@gmail.com", "admin");
