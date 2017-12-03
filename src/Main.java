@@ -45,6 +45,7 @@ public class Main {
 	}
     }
 
+    /****** USER/MEMBER LOGIN/MENU **********************************************************************************/
     public static void createUserMenu() {
 	while (true) {
 	    System.out.print("Creating basic GameGo account.");
@@ -72,6 +73,28 @@ public class Main {
 	}
     }
 
+    public static void createMemberMenu() {
+	while (true) {
+	    System.out.println("Joining GameGo Membership, please confirm your credentials.");
+	    System.out.print("\r\nEmail: ");
+	    String email = scanner.nextLine();
+	    System.out.print("\r\nPassword: ");
+	    String password = scanner.nextLine();
+	    System.out.println(wipe);
+
+	    int response = sqlProc.createMember(email, password);
+
+	    if (response > -1) {
+		System.out.println("You've successfully joined GameGo membership.");
+		return;
+	    } else {
+		System.out.println("Oops, incorrect credentials when trying to become member.");
+		return;
+	    }
+
+	}
+    }
+    
     public static void loginUserMenu() {
 	while (true) {
 	    System.out.print("Logging into GameGo account.");
@@ -108,7 +131,7 @@ public class Main {
 	    if (response > -1) {
 		currentUserId = response;
 		isAdmin = true;
-		admin_memberMenu();
+		adminMenu();
 		return;
 	    } else {
 		System.out.println("Oops, user exists already.");
@@ -162,28 +185,6 @@ public class Main {
 	}
     }
 
-    public static void createMemberMenu() {
-	while (true) {
-	    System.out.println("Joining GameGo Membership, please confirm your credentials.");
-	    System.out.print("\r\nEmail: ");
-	    String email = scanner.nextLine();
-	    System.out.print("\r\nPassword: ");
-	    String password = scanner.nextLine();
-	    System.out.println(wipe);
-
-	    int response = sqlProc.createMember(email, password);
-
-	    if (response > -1) {
-		System.out.println("You've successfully joined GameGo membership.");
-		return;
-	    } else {
-		System.out.println("Oops, incorrect credentials when trying to become member.");
-		return;
-	    }
-
-	}
-    }
-    
     public static void memberMenu() {
 	while (true) {
 	    System.out.println("Membership Menu");
@@ -223,6 +224,7 @@ public class Main {
 	}
     }
     
+    /****** GAME MENUES **********************************************************************************/
     public static void browseGamesMenu() {
 	while (true) {
 	    System.out.println("Browse Games Menu");
@@ -346,58 +348,6 @@ public class Main {
 	}
     }
     
-    public static void browseConsolesMenu() {
-	while (true) {
-	    System.out.println("Browse Consoles Menu");
-	    System.out.println("Enter a key value to proceed:");
-	    System.out.println("[1] View all consoles by title");
-	    System.out.println("[2] View all consoles by price");
-	    if (isAdmin == false) {
-		System.out.println("[B] Buy");
-	    }
-	    System.out.println("[Q] Go back");
-
-	    String choice = scanner.nextLine();
-	    System.out.println(wipe);
-	    
-	    ArrayList<String> consoleList = new ArrayList<String>();
-	    
-	    switch (choice.toLowerCase()) {
-	    case "1":
-		consoleList = displaySqlProc.viewConsoles("name");
-		printItemList(consoleList);
-		break;
-	    case "2":
-		consoleList = displaySqlProc.viewConsoles("price");
-		printItemList(consoleList);
-		break;
-	    case "b":
-		if (isAdmin == true) {
-		    System.out.println("Invalid input, try again.");
-		} else {
-		    consoleList = displaySqlProc.viewConsoles("name");
-		    printItemList(consoleList);
-		    System.out.println("Enter the console's ID to purchase the game.");
-		    System.out.println("Or, press [Q] to go back.");
-		    String cidString = scanner.nextLine();
-		    System.out.println(wipe);
-		    if (cidString.toLowerCase().equals("q")) {
-			break;
-		    } else {
-			int cidInt = Integer.parseInt(cidString);
-			String result = sqlProc.buyConsole(currentUserId, cidInt);
-			System.out.println(result);
-		    }
-		}
-		break;
-	    case "q":
-		return;
-	    default:
-		System.out.println("Invalid input, try again.");
-	    }
-	}
-    }
-
     public static void searchGamesMenu() {
 	while (true) {
 	    System.out.println("View Games Menu");
@@ -588,6 +538,59 @@ public class Main {
 	}
     }
     
+    /****** CONSOLE MENU **********************************************************************************/
+    public static void browseConsolesMenu() {
+	while (true) {
+	    System.out.println("Browse Consoles Menu");
+	    System.out.println("Enter a key value to proceed:");
+	    System.out.println("[1] View all consoles by title");
+	    System.out.println("[2] View all consoles by price");
+	    if (isAdmin == false) {
+		System.out.println("[B] Buy");
+	    }
+	    System.out.println("[Q] Go back");
+
+	    String choice = scanner.nextLine();
+	    System.out.println(wipe);
+	    
+	    ArrayList<String> consoleList = new ArrayList<String>();
+	    
+	    switch (choice.toLowerCase()) {
+	    case "1":
+		consoleList = displaySqlProc.viewConsoles("name");
+		printItemList(consoleList);
+		break;
+	    case "2":
+		consoleList = displaySqlProc.viewConsoles("price");
+		printItemList(consoleList);
+		break;
+	    case "b":
+		if (isAdmin == true) {
+		    System.out.println("Invalid input, try again.");
+		} else {
+		    consoleList = displaySqlProc.viewConsoles("name");
+		    printItemList(consoleList);
+		    System.out.println("Enter the console's ID to purchase the game.");
+		    System.out.println("Or, press [Q] to go back.");
+		    String cidString = scanner.nextLine();
+		    System.out.println(wipe);
+		    if (cidString.toLowerCase().equals("q")) {
+			break;
+		    } else {
+			int cidInt = Integer.parseInt(cidString);
+			String result = sqlProc.buyConsole(currentUserId, cidInt);
+			System.out.println(result);
+		    }
+		}
+		break;
+	    case "q":
+		return;
+	    default:
+		System.out.println("Invalid input, try again.");
+	    }
+	}
+    }
+    /****** GAMES/CONSOLE PRINTING HELPERS **********************************************************************************/
     public static void printItemList(ArrayList<String> itemList) {
 	for (String listing : itemList) {
 	    System.out.println(listing);
@@ -600,13 +603,13 @@ public class Main {
     
     /****** ADMIN SPECIFIC MENUES **********************************************************************************/
     
-    public static void admin_memberMenu() {
+    public static void adminMenu() {
 	while (true) {
 	    System.out.println("ADMIN Membership Menu");
 	    System.out.println("Enter a key value to proceed:");
-	    System.out.println("[1] Browse games, [2] Browse consoles");
-	    System.out.println("View [3]Memberships, [4]Rentals, [5]Sales, [6]Transactions, [7]Statistics");
-	    System.out.println("[8] Promote user to admin");
+	    System.out.println("[1] Browse games, [2] Browse consoles, [3] Modify Inventory");
+	    System.out.println("View [4]Memberships, [5]Rentals, [6]Sales, [7]Transactions, [8]Statistics");
+	    System.out.println("[9] Promote user to admin");
 	    System.out.println("[Q] Log out");
 	    
 	    String choice = scanner.nextLine();
@@ -620,22 +623,25 @@ public class Main {
 		browseConsolesMenu();
 		break;
 	    case "3":
-		System.out.println("Awaiting Implementation");
+		System.out.println("Modify Inventory");
 		break;
 	    case "4":
-		System.out.println("Awaiting Implementation");
+		admin_membershipsMenu();
 		break;
 	    case "5":
-		System.out.println("Awaiting Implementation");
+		System.out.println("View Rentals");
 		break;
 	    case "6":
-		System.out.println("Awaiting Implementation");
+		System.out.println("View Sales");
 		break;
 	    case "7":
-		System.out.println("Awaiting Implementation");
+		admin_transactionsMenu();
 		break;
 	    case "8":
-		System.out.println("Awaiting Implementation");
+		System.out.println("View Statistics");
+		break;
+	    case "9":
+		System.out.println("Promote user to admin");
 		break;
 	    case "q":
 		return;
@@ -643,6 +649,50 @@ public class Main {
 		System.out.println("Invalid input, try again.");
 	    }
 
+	}
+    }
+    
+    public static void admin_membershipsMenu() {
+	while (true) {
+	    System.out.println("ADMIN Memberships Menu");
+	    System.out.println("Enter a key value to proceed:");
+	    System.out.println("[1] List all users and GameGo member ID (if signed up)");
+	    System.out.println("[2] Search member by email");
+	    System.out.println("[Q] Go back");
+	    
+	    String choice = scanner.nextLine();
+	    System.out.println(wipe);
+
+	    switch (choice.toLowerCase()) {
+	    case "1":
+		ArrayList<String> list = displaySqlProc.admin_viewMemberships();
+		printItemList(list);
+		break;
+	    case "2":
+		helper_admin_searchMemberships();
+		break;
+	    case "q":
+		return;
+	    default:
+		System.out.println("Invalid input, try again.");
+	    }
+
+	}
+    }
+    
+    public static void helper_admin_searchMemberships() {
+	while (true) {
+	    System.out.println("Enter an email or type !q to go back:");
+	    String input = scanner.nextLine();
+	    System.out.println(wipe);
+	    
+	    switch (input.toLowerCase()) {
+	    case "!q":
+		return;
+	    default: 
+		ArrayList<String> list = displaySqlProc.admin_searchMembershipsByEmail(input);
+		printItemList(list);
+	    }
 	}
     }
     

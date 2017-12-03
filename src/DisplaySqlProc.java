@@ -316,6 +316,105 @@ public class DisplaySqlProc {
 	}
 
     }
+    
+    public ArrayList<String> admin_viewMemberships() {
+	try {
+	    ArrayList<String> list = new ArrayList<String>();
+	    CallableStatement cs = conn.prepareCall("{CALL admin_viewMemberships()}");
+	    
+	    boolean hasResults = cs.execute();
+	    while (hasResults) {
+		ResultSet rs = cs.getResultSet();
+		String uidFormat = String.format("|%-5s|", "UID");
+		String midFormat = String.format("%-5s|", "MID");
+		String pointsFormat = String.format("%-10s|", "Points");
+		String nameFormat = String.format("%-25s|", "Name");		    
+		String ageFormat = String.format("%-3s|", "Age");		    
+		String emailFormat = String.format("%-25s|", "Email");
+		list.add(uidFormat + midFormat + pointsFormat + nameFormat + ageFormat + emailFormat);
+		
+		while (rs.next()) {
+		    int uid = rs.getInt("uid");
+		    int mid = rs.getInt("mid");
+		    int points = rs.getInt("points");
+		    String name = rs.getString("name");
+		    int age = rs.getInt("age");
+		    String email = rs.getString("email");
+
+		    uidFormat = String.format("|%-5d|", uid);
+		    
+		    if (mid == 0) {
+			midFormat = String.format("%-5s|", "-----");
+			pointsFormat = String.format("%-10s|", "-----");
+		    } else {
+			midFormat = String.format("%-5d|", mid);
+			pointsFormat = String.format("%-10d|", points);
+		    }
+		    nameFormat = String.format("%-25s|", name);		    
+		    ageFormat = String.format("%-3d|", age);		    
+		    emailFormat = String.format("%-25s|", email);
+
+
+		    list.add(uidFormat + midFormat + pointsFormat + nameFormat + ageFormat + emailFormat);
+		}
+		hasResults = cs.getMoreResults();
+	    }
+	    return list;
+	} catch (Exception e) {
+	    e.printStackTrace();
+	    return null;
+	}
+    }
+    
+    public ArrayList<String> admin_searchMembershipsByEmail(String input) {
+	try {
+	    ArrayList<String> list = new ArrayList<String>();
+	    CallableStatement cs = conn.prepareCall("{CALL admin_searchMembershipsByEmail(?)}");
+	    cs.setString(1, input);
+	    
+	    boolean hasResults = cs.execute();
+	    while (hasResults) {
+		ResultSet rs = cs.getResultSet();
+		String uidFormat = String.format("|%-5s|", "UID");
+		String midFormat = String.format("%-5s|", "MID");
+		String pointsFormat = String.format("%-10s|", "Points");
+		String nameFormat = String.format("%-25s|", "Name");		    
+		String ageFormat = String.format("%-3s|", "Age");		    
+		String emailFormat = String.format("%-25s|", "Email");
+		list.add(uidFormat + midFormat + pointsFormat + nameFormat + ageFormat + emailFormat);
+		
+		while (rs.next()) {
+		    int uid = rs.getInt("uid");
+		    int mid = rs.getInt("mid");
+		    int points = rs.getInt("points");
+		    String name = rs.getString("name");
+		    int age = rs.getInt("age");
+		    String email = rs.getString("email");
+
+		    uidFormat = String.format("|%-5d|", uid);
+		    
+		    if (mid == 0) {
+			midFormat = String.format("%-5s|", "-----");
+			pointsFormat = String.format("%-10s|", "-----");
+		    } else {
+			midFormat = String.format("%-5d|", mid);
+			pointsFormat = String.format("%-10d|", points);
+		    }
+		    nameFormat = String.format("%-25s|", name);		    
+		    ageFormat = String.format("%-3d|", age);		    
+		    emailFormat = String.format("%-25s|", email);
+
+
+		    list.add(uidFormat + midFormat + pointsFormat + nameFormat + ageFormat + emailFormat);
+		}
+		hasResults = cs.getMoreResults();
+	    }
+	    return list;
+	} catch (Exception e) {
+	    e.printStackTrace();
+	    return null;
+	}
+    }
     /****** END MEMBERSHIP DISPLAYS ******************************************************/
     
 }

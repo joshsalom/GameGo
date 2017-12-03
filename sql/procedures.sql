@@ -293,3 +293,17 @@ create procedure viewGamesOnSale()
 select * from games natural join sales
 order by price asc;
  
+#admin_viewMemberships
+drop procedure if exists admin_viewMemberships;
+create procedure admin_viewMemberships()
+select uid, mid, points, name, age, email
+from users left outer join memberships using(uid)
+order by mid desc, name asc;
+
+#admin_searchMembershipsByEmail
+drop procedure if exists admin_searchMembershipsByEmail;
+create procedure admin_searchMembershipsByEmail(IN newEmail varchar(50))
+select uid, mid, points, name, age, email
+from users left outer join memberships using(uid)
+where email LIKE CONCAT('%', newEmail, '%')
+order by mid desc, name asc; 
