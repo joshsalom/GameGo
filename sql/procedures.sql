@@ -321,3 +321,53 @@ select uid from admins
 where admins.email = newEmail and admins.uid = newUid;
 END //
 DELIMITER ;
+
+#count games group by author
+drop procedure if exists countGamesByAuthor;
+create procedure countGamesByAuthor()
+select author, count(*)
+from games
+group by author
+order by author asc;
+
+drop procedure if exists countGamesByGenre;
+create procedure countGamesByGenre()
+select Genre, count(*)
+from games
+group by Genre
+order by Genre asc;
+
+drop procedure if exists countGamesByConsole;
+create procedure countGamesByConsole()
+select console_type, count(*)
+from games
+group by console_type
+order by console_type asc;
+
+drop procedure if exists countGamesByRating;
+create procedure countGamesByRating()
+select rating, count(*)
+from games
+group by rating
+order by rating asc;
+
+#co-related query 
+drop procedure if exists ratingGreaterThanAvgByGenre;
+create procedure ratingGreaterThanAvgByGenre()
+select *
+from games g1
+where g1.rating > (select avg(rating) from games g2 where g1.genre=g2.genre)
+order by title asc;
+
+drop procedure if exists ratingGreaterThanAvgByConsole;
+create procedure ratingGreaterThanAvgByConsole()
+select *
+from games g1
+where g1.rating > (select avg(rating) from games g2 where g1.console_type=g2.console_type)
+order by title asc;
+
+drop procedure if exists sumOfTransactionsByTwoDates;
+create procedure sumOfTransactionsByTwoDates(IN date1 varchar(50), IN date2 varchar(50))
+select sum(price)
+from transactions
+where date1 < date and date < date2;
