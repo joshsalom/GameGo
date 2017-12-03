@@ -260,8 +260,10 @@ public class Main {
 	    System.out.println("Enter a key value to proceed:");
 	    System.out.println("View games sorted by..");
 	    System.out.println("[1]title, [2]author, [3]genre, [4]console, [5]rating, [6]price");
-	    System.out.println("[B] Buy game");
-	    System.out.println("[R] Rent game (GameGo Members Only)");
+	    if (isAdmin == false) {
+		System.out.println("[B] Buy game");
+		System.out.println("[R] Rent game (GameGo Members Only)");
+	    }
 	    System.out.println("[Q] Go back");
 
 	    String choice = scanner.nextLine();
@@ -294,34 +296,47 @@ public class Main {
 		printItemList(gameList);
 		break;
 	    case "b":
-		gameList = displaySqlProc.viewGames("title");
-		printItemList(gameList);
-		System.out.println("Enter the game's ID to purchase the game.");
-		System.out.println("Or, press [Q] to go back.");
-		String gidString = scanner.nextLine();
-		System.out.println(wipe);
-		if (gidString.toLowerCase().equals("q")) {
-		    break;
+		if (isAdmin == true) {
+		    System.out.println("Invalid input, try again.");
 		} else {
-		    int gidInt = Integer.parseInt(gidString);
-		    String result = sqlProc.buyGame(currentUserId, gidInt);
-		    System.out.println(result);
+		    gameList = displaySqlProc.viewGames("title");
+		    printItemList(gameList);
+		    System.out.println("Enter the game's ID to purchase the game.");
+		    System.out.println("Or, press [Q] to go back.");
+		    String gidString = scanner.nextLine();
+		    System.out.println(wipe);
+		    if (gidString.toLowerCase().equals("q")) {
+			break;
+		    } else {
+			int gidInt = Integer.parseInt(gidString);
+			String result = sqlProc.buyGame(currentUserId, gidInt);
+			System.out.println(result);
+		    }
 		}
 		break;
 	    case "r":
-		gameList = displaySqlProc.viewGames("title");
-		printItemList(gameList);
-		System.out.println("Enter the game's ID to rent the game.");
-		System.out.println("Or, press [Q] to go back.");
-		String gidRentString = scanner.nextLine();
-		System.out.println(wipe);
-		if (gidRentString.toLowerCase().equals("q")) {
-		    break;
+		if (isAdmin == true) {
+		    System.out.println("Invalid input, try again.");
 		} else {
-		    int gidInt = Integer.parseInt(gidRentString);
-		    String result = sqlProc.rentGame(currentUserId, gidInt);
-		    System.out.println(result);
+		    if (currentMemberId == -1) {
+			System.out.println("Error: renting is excluse to GameGo members");
+		    } else {
+			gameList = displaySqlProc.viewGames("title");
+			printItemList(gameList);
+			System.out.println("Enter the game's ID to rent the game.");
+			System.out.println("Or, press [Q] to go back.");
+			String gidRentString = scanner.nextLine();
+			System.out.println(wipe);
+			if (gidRentString.toLowerCase().equals("q")) {
+			    break;
+			} else {
+		   	    int gidInt = Integer.parseInt(gidRentString);
+		   	    String result = sqlProc.rentGame(currentUserId, gidInt);
+		   	    System.out.println(result);
+			}
+		    }
 		}
+		
 		break;
 	    case "q":
 		return;
@@ -337,7 +352,9 @@ public class Main {
 	    System.out.println("Enter a key value to proceed:");
 	    System.out.println("[1] View all consoles by title");
 	    System.out.println("[2] View all consoles by price");
-	    System.out.println("[B] Buy");
+	    if (isAdmin == false) {
+		System.out.println("[B] Buy");
+	    }
 	    System.out.println("[Q] Go back");
 
 	    String choice = scanner.nextLine();
@@ -355,18 +372,22 @@ public class Main {
 		printItemList(consoleList);
 		break;
 	    case "b":
-		consoleList = displaySqlProc.viewConsoles("name");
-		printItemList(consoleList);
-		System.out.println("Enter the console's ID to purchase the game.");
-		System.out.println("Or, press [Q] to go back.");
-		String cidString = scanner.nextLine();
-		System.out.println(wipe);
-		if (cidString.toLowerCase().equals("q")) {
-		    break;
+		if (isAdmin == true) {
+		    System.out.println("Invalid input, try again.");
 		} else {
-		    int cidInt = Integer.parseInt(cidString);
-		    String result = sqlProc.buyConsole(currentUserId, cidInt);
-		    System.out.println(result);
+		    consoleList = displaySqlProc.viewConsoles("name");
+		    printItemList(consoleList);
+		    System.out.println("Enter the console's ID to purchase the game.");
+		    System.out.println("Or, press [Q] to go back.");
+		    String cidString = scanner.nextLine();
+		    System.out.println(wipe);
+		    if (cidString.toLowerCase().equals("q")) {
+			break;
+		    } else {
+			int cidInt = Integer.parseInt(cidString);
+			String result = sqlProc.buyConsole(currentUserId, cidInt);
+			System.out.println(result);
+		    }
 		}
 		break;
 	    case "q":
@@ -385,8 +406,10 @@ public class Main {
 	    System.out.println("[1]title, [2]author, [3]genre, [4]console");
 	    System.out.println("[5]rating (Less Than), [6]rating (Greater Than)");
 	    System.out.println("[7]price (Less Than), [8]price (Greater Than)");
-	    System.out.println("[B] Buy game");
-	    System.out.println("[R] Rent game (GameGo Members Only)");
+	    if (isAdmin == false) {
+		System.out.println("[B] Buy game");
+		System.out.println("[R] Rent game (GameGo Members Only)");
+	    }
 	    System.out.println("[Q] Go back");
 
 	    System.out.println("Categorical search:");
@@ -420,34 +443,47 @@ public class Main {
 		searchGamesByPriceMenu("GreaterThan");
 		break;
 	    case "b":
-		gameList = displaySqlProc.viewGames("title");
-		printItemList(gameList);
-		System.out.println("Enter the game's ID to purchase the game.");
-		System.out.println("Or, press [Q] to go back.");
-		String gidString = scanner.nextLine();
-		System.out.println(wipe);
-		if (gidString.toLowerCase().equals("q")) {
-		    break;
+		if (isAdmin == true) {
+		    System.out.println("Invalid input, try again.");
 		} else {
-		    int gidInt = Integer.parseInt(gidString);
-		    String result = sqlProc.buyGame(currentUserId, gidInt);
-		    System.out.println(result);
+		    gameList = displaySqlProc.viewGames("title");
+		    printItemList(gameList);
+		    System.out.println("Enter the game's ID to purchase the game.");
+		    System.out.println("Or, press [Q] to go back.");
+		    String gidString = scanner.nextLine();
+		    System.out.println(wipe);
+		    if (gidString.toLowerCase().equals("q")) {
+			break;
+		    } else {
+			int gidInt = Integer.parseInt(gidString);
+			String result = sqlProc.buyGame(currentUserId, gidInt);
+			System.out.println(result);
+		    }
 		}
 		break;
 	    case "r":
-		gameList = displaySqlProc.viewGames("title");
-		printItemList(gameList);
-		System.out.println("Enter the game's ID to rent the game.");
-		System.out.println("Or, press [Q] to go back.");
-		String gidRentString = scanner.nextLine();
-		System.out.println(wipe);
-		if (gidRentString.toLowerCase().equals("q")) {
-		    break;
+		if (isAdmin == true) {
+		    System.out.println("Invalid input, try again.");
 		} else {
-		    int gidInt = Integer.parseInt(gidRentString);
-		    String result = sqlProc.rentGame(currentUserId, gidInt);
-		    System.out.println(result);
+		    if (currentMemberId == -1) {
+			System.out.println("Error: renting is excluse to GameGo members");
+		    } else {
+			gameList = displaySqlProc.viewGames("title");
+			printItemList(gameList);
+			System.out.println("Enter the game's ID to rent the game.");
+			System.out.println("Or, press [Q] to go back.");
+			String gidRentString = scanner.nextLine();
+			System.out.println(wipe);
+			if (gidRentString.toLowerCase().equals("q")) {
+			    break;
+			} else {
+		   	    int gidInt = Integer.parseInt(gidRentString);
+		   	    String result = sqlProc.rentGame(currentUserId, gidInt);
+		   	    System.out.println(result);
+			}
+		    }
 		}
+		
 		break;
 	    case "q":
 		return;
@@ -578,10 +614,10 @@ public class Main {
 
 	    switch (choice.toLowerCase()) {
 	    case "1":
-		System.out.println("Awaiting Implementation");
+		browseGamesMenu();
 		break;
 	    case "2":
-		System.out.println("Awaiting Implementation");
+		browseConsolesMenu();
 		break;
 	    case "3":
 		System.out.println("Awaiting Implementation");
