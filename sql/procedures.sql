@@ -325,28 +325,28 @@ DELIMITER ;
 #count games group by author
 drop procedure if exists countGamesByAuthor;
 create procedure countGamesByAuthor()
-select author, count(*)
+select author, count(*) as count
 from games
 group by author
 order by author asc;
 
 drop procedure if exists countGamesByGenre;
 create procedure countGamesByGenre()
-select Genre, count(*)
+select genre, count(*) as count
 from games
-group by Genre
-order by Genre asc;
+group by genre
+order by genre asc;
 
 drop procedure if exists countGamesByConsole;
 create procedure countGamesByConsole()
-select console_type, count(*)
+select console_type, count(*) as count
 from games
 group by console_type
 order by console_type asc;
 
 drop procedure if exists countGamesByRating;
 create procedure countGamesByRating()
-select rating, count(*)
+select rating, count(*) as count
 from games
 group by rating
 order by rating asc;
@@ -368,6 +368,6 @@ order by title asc;
 
 drop procedure if exists sumOfTransactionsByTwoDates;
 create procedure sumOfTransactionsByTwoDates(IN date1 varchar(50), IN date2 varchar(50))
-select sum(price)
+select sum(price) as revenue
 from transactions
 where date1 < date and date < date2;

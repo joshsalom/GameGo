@@ -317,6 +317,7 @@ public class DisplaySqlProc {
 
     }
     
+    /****** ADMIN DISPLAYS ******************************************************/
     public ArrayList<String> admin_viewMemberships() {
 	try {
 	    ArrayList<String> list = new ArrayList<String>();
@@ -415,6 +416,94 @@ public class DisplaySqlProc {
 	    return null;
 	}
     }
-    /****** END MEMBERSHIP DISPLAYS ******************************************************/
     
+    public ArrayList<String> countGames(String category) {
+	try {
+	    ArrayList<String> gameList = new ArrayList<String>();
+	    CallableStatement cs = conn.prepareCall("{CALL countGamesBy" + category + "()}");
+	    boolean hasResults = cs.execute();
+	    while (hasResults) {
+		ResultSet rs = cs.getResultSet();
+		while (rs.next()) {
+		    String categoryString = "";
+		    if (category.equals("rating")) {
+			categoryString = "" + rs.getInt(category);
+		    } else if (category.equals("console")){
+			categoryString = rs.getString("console_type");
+		    } else {
+			categoryString = rs.getString(category);
+		    }
+		    int count = rs.getInt("count");
+
+		    String categoryFormat = String.format("|%-15s|", categoryString);
+		    String countFormat = String.format("%-5d|", count);
+
+
+		    gameList.add(categoryFormat + countFormat);
+		}
+		hasResults = cs.getMoreResults();
+	    }
+	    return gameList;
+	} catch (Exception e) {
+	    // e.printStackTrace();
+	    return null;
+	}
+
+    }
+    
+    public ArrayList<String> ratingGreaterThanAvg(String category) {
+	try {
+	    ArrayList<String> gameList = new ArrayList<String>();
+	    CallableStatement cs = conn.prepareCall("{CALL ratingGreaterThanAvgBy" + category + "()}");
+	    boolean hasResults = cs.execute();
+	    while (hasResults) {
+		ResultSet rs = cs.getResultSet();
+		while (rs.next()) {
+		    int gid = rs.getInt("gid");
+		    String title = rs.getString("title");
+		    String author = rs.getString("author");
+		    String genre = rs.getString("genre");
+		    String console = rs.getString("console_type");
+		    int rating = rs.getInt("rating");
+		    double price = rs.getDouble("price");
+		    int stock = rs.getInt("stock");
+
+		    String gidFormat = String.format("|%-5d|", gid);
+		    String titleFormat = String.format("%-20s|", title);
+		    String authorFormat = String.format("%-15s|", author);
+		    String genreFormat = String.format("%-10s|", genre);
+		    String consoleFormat = String.format("%-15s|", console);
+		    String ratingFormat = String.format("%-2d|", rating);
+		    String priceFormat = String.format("$%10.2f|", price);
+		    String stockFormat = String.format("%-5d|", stock);
+
+		    gameList.add(gidFormat + titleFormat + authorFormat + genreFormat + consoleFormat + ratingFormat
+			    + priceFormat + stockFormat);
+		}
+		hasResults = cs.getMoreResults();
+	    }
+	    return gameList;
+	} catch (Exception e) {
+	    // e.printStackTrace();
+	    return null;
+	}
+    }
+    
+    public void sumOfTransactionsByTwoDates(String date1, String date2) {
+	try {
+	    CallableStatement cs = conn.prepareCall("{CALL sumOfTransactionsByTwoDates(?, ?)}");
+	    cs.setString(1, date1);
+	    cs.setString(2, date2);
+	    boolean hasResults = cs.execute();
+	    while (hasResults) {
+		ResultSet rs = cs.getResultSet();
+		while (rs.next()) {
+		    System.out.println(rs.getInt("revenue"));
+		}
+		hasResults = cs.getMoreResults();
+	    }
+	} catch (Exception e) {
+	    // e.printStackTrace();
+	}
+    }
 }

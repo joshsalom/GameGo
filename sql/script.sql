@@ -91,14 +91,11 @@ CREATE TABLE Transactions
 	price DOUBLE NOT NULL,
 	date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	FOREIGN KEY (uid) 
-	REFERENCES users (uid)
-	ON DELETE CASCADE,
+	REFERENCES users (uid),
 	FOREIGN KEY (gid)
-	REFERENCES games (gid)
-	ON DELETE CASCADE,
+	REFERENCES games (gid),
 	FOREIGN KEY (cid)
 	REFERENCES consoles (cid)
-	ON DELETE CASCADE
 );
 DROP TABLE IF EXISTS Sales;
 CREATE TABLE Sales
@@ -108,6 +105,22 @@ CREATE TABLE Sales
 	originalPrice DOUBLE(6, 2) NOT NULL,
 	FOREIGN KEY (gid)
 	REFERENCES games (gid)
+);
+DROP TABLE IF EXISTS archive_transactions
+CREATE TABLE archive_transactions
+(
+	tid INT PRIMARY KEY,
+	uid INT,
+	gid INT,
+	cid INT,
+	price DOUBLE NOT NULL,
+	date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	FOREIGN KEY (uid) 
+	REFERENCES users (uid),
+	FOREIGN KEY (gid)
+	REFERENCES games (gid),
+	FOREIGN KEY (cid)
+	REFERENCES consoles (cid)
 );
 # Create Default Admin
 INSERT 

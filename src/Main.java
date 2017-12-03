@@ -638,7 +638,7 @@ public class Main {
 		admin_transactionsMenu();
 		break;
 	    case "8":
-		System.out.println("View Statistics");
+		admin_statisticsMenu();
 		break;
 	    case "9":
 		ArrayList<String> list = displaySqlProc.admin_viewMemberships();
@@ -751,6 +751,64 @@ public class Main {
 		break;
 	    case "5":
 		System.out.println("Awaiting Implementation");
+		break;
+	    case "q":
+		return;
+	    default:
+		System.out.println("Invalid input, try again.");
+	    }
+
+	}
+    }
+    public static void admin_statisticsMenu() {
+	while (true) {
+	    System.out.println("ADMIN Statistics Menu");
+	    System.out.println("Enter a key value to proceed:");
+	    System.out.println("Count games grouped by..");
+	    System.out.println("[1]author, [2]genre, [3]console, [4]rating");
+	    System.out.println("List games with above average rating sorted by..");
+	    System.out.println("[5]genre, [6]console");
+	    System.out.println("[7] Sum of revenue between two dates");
+	    System.out.println("[Q] Go back");
+	    
+	    String choice = scanner.nextLine();
+	    System.out.println(wipe);
+
+	    ArrayList<String> list = new ArrayList<String>();
+	    switch (choice.toLowerCase()) {
+	    case "1":
+		list = displaySqlProc.countGames("author");
+		printItemList(list);
+		break;
+	    case "2":
+		list = displaySqlProc.countGames("genre");
+		printItemList(list);
+		break;
+	    case "3":
+		list = displaySqlProc.countGames("console");
+		printItemList(list);
+		break;
+	    case "4":
+		list = displaySqlProc.countGames("rating");
+		printItemList(list);
+		break;
+	    case "5":
+		list = displaySqlProc.ratingGreaterThanAvg("genre");
+		printItemList(list);
+		break;
+	    case "6":
+		list = displaySqlProc.ratingGreaterThanAvg("console");
+		printItemList(list);
+		break;
+	    case "7":
+		System.out.print("Enter a date in YYYY-MM-DD format");
+		System.out.print("\r\nTransactions after this date: ");
+		String date1 = scanner.nextLine();
+		System.out.print("\r\nTransactions before this date: ");
+		String date2 = scanner.nextLine();
+		System.out.println(wipe);
+		
+		displaySqlProc.sumOfTransactionsByTwoDates(date1, date2);
 		break;
 	    case "q":
 		return;
