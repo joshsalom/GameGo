@@ -55,6 +55,20 @@ public class SqlProc {
 	    return -1;
 	}
     }
+    public int loginAdmin(String email, String password) {
+	try {
+	    CallableStatement cs = conn.prepareCall("{CALL loginAdmin(?, ?)}");
+	    cs.setString(1, email);
+	    cs.setString(2, password);
+	    
+	    ResultSet rs = cs.executeQuery();
+	    rs.next();
+	    return rs.getInt("uid");
+	} catch (Exception e) {
+	    //e.printStackTrace();
+	    return -1;
+	}
+    }
     public int createMember(String email, String password) {
 	try {
 	    CallableStatement cs = conn.prepareCall("{CALL createMember(?, ?)}");

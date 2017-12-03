@@ -19,6 +19,12 @@ create procedure loginUser(IN newEmail varchar(50), IN newPassword varchar(50))
 select users.uid from users
 where users.email = newEmail and users.password = newPassword;
 
+#login admin
+drop procedure if exists loginAdmin;
+create procedure loginAdmin(IN newEmail varchar(50), IN newPassword varchar(50))
+select admins.uid from admins
+where admins.email = newEmail and admins.password = newPassword;
+
 # Sign up for GameGo membership
 DROP PROCEDURE IF EXISTS createMember;
 
@@ -286,3 +292,4 @@ drop procedure if exists viewGamesOnSale;
 create procedure viewGamesOnSale()
 select * from games natural join sales
 order by price asc;
+ 

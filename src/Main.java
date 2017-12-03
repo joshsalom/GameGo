@@ -3,6 +3,7 @@ import java.util.*;
 public class Main {
     private static int currentUserId;
     private static int currentMemberId;
+    private static boolean isAdmin;
     private static SqlProc sqlProc;
     private static DisplaySqlProc displaySqlProc;
     private static Scanner scanner;
@@ -31,7 +32,7 @@ public class Main {
 		loginUserMenu();
 		break;
 	    case "3":
-		//TODO: loginAdminMenu();
+		loginAdminMenu();
 		break;
 	    case "q":
 		System.out.println("Goodbyes from GameGo!");
@@ -84,7 +85,30 @@ public class Main {
 
 	    if (response > -1) {
 		currentUserId = response;
+		isAdmin = false;
 		userMenu();
+		return;
+	    } else {
+		System.out.println("Oops, user exists already.");
+	    }
+	}
+    }
+    
+    public static void loginAdminMenu() {
+	while (true) {
+	    System.out.print("Logging into Admin account.");
+	    System.out.print("\r\nEmail: ");
+	    String email = scanner.nextLine();
+	    System.out.print("\r\nPassword: ");
+	    String password = scanner.nextLine();
+	    System.out.println(wipe);
+
+	    int response = sqlProc.loginAdmin(email, password);
+
+	    if (response > -1) {
+		currentUserId = response;
+		isAdmin = true;
+		admin_memberMenu();
 		return;
 	    } else {
 		System.out.println("Oops, user exists already.");
@@ -129,6 +153,8 @@ public class Main {
 		break;
 	    case "q":
 		System.out.println("You've recently logged out.");
+		currentUserId = 0;
+		isAdmin = false;
 		return;
 	    default:
 		System.out.println("Invalid input, try again.");
@@ -542,9 +568,10 @@ public class Main {
 	while (true) {
 	    System.out.println("ADMIN Membership Menu");
 	    System.out.println("Enter a key value to proceed:");
-	    System.out.println("[1] List all members");
-	    System.out.println("[2] Search for member by email");
-	    System.out.println("[Q] Go back");
+	    System.out.println("[1] Browse games, [2] Browse consoles");
+	    System.out.println("View [3]Memberships, [4]Rentals, [5]Sales, [6]Transactions, [7]Statistics");
+	    System.out.println("[8] Promote user to admin");
+	    System.out.println("[Q] Log out");
 	    
 	    String choice = scanner.nextLine();
 	    System.out.println(wipe);
@@ -554,6 +581,24 @@ public class Main {
 		System.out.println("Awaiting Implementation");
 		break;
 	    case "2":
+		System.out.println("Awaiting Implementation");
+		break;
+	    case "3":
+		System.out.println("Awaiting Implementation");
+		break;
+	    case "4":
+		System.out.println("Awaiting Implementation");
+		break;
+	    case "5":
+		System.out.println("Awaiting Implementation");
+		break;
+	    case "6":
+		System.out.println("Awaiting Implementation");
+		break;
+	    case "7":
+		System.out.println("Awaiting Implementation");
+		break;
+	    case "8":
 		System.out.println("Awaiting Implementation");
 		break;
 	    case "q":
