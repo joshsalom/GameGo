@@ -307,3 +307,17 @@ select uid, mid, points, name, age, email
 from users left outer join memberships using(uid)
 where email LIKE CONCAT('%', newEmail, '%')
 order by mid desc, name asc; 
+
+#create admin
+drop procedure if exists admin_addNewAdmin;
+DELIMITER //
+create procedure admin_addNewAdmin(IN newUid INT, IN newEmail varchar(50))
+BEGIN
+insert into admins
+select uid, name, email, password
+from users
+where uid = newUid and email = newEmail;
+select uid from admins
+where admins.email = newEmail and admins.uid = newUid;
+END //
+DELIMITER ;

@@ -160,4 +160,19 @@ public class SqlProc {
 	    return "Something went wrong with buying the game";
 	}
     }
+    
+    public int admin_addNewAdmin(int uid, String email) {
+	try {
+	    CallableStatement cs = conn.prepareCall("{CALL admin_addNewAdmin(?, ?)}");
+	    cs.setInt(1, uid);
+	    cs.setString(2, email);
+	    
+	    ResultSet rs = cs.executeQuery();
+	    rs.next();
+	    return rs.getInt("uid");
+	} catch (Exception e) {
+	    //e.printStackTrace();
+	    return -1;
+	}
+    }
 }

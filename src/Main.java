@@ -641,7 +641,9 @@ public class Main {
 		System.out.println("View Statistics");
 		break;
 	    case "9":
-		System.out.println("Promote user to admin");
+		ArrayList<String> list = displaySqlProc.admin_viewMemberships();
+		printItemList(list);
+		admin_addNewAdmin();
 		break;
 	    case "q":
 		return;
@@ -693,6 +695,30 @@ public class Main {
 		ArrayList<String> list = displaySqlProc.admin_searchMembershipsByEmail(input);
 		printItemList(list);
 	    }
+	}
+    }
+    
+    public static void admin_addNewAdmin() {
+	while (true) {
+	    System.out.print("Promoting user to admin.");
+	    System.out.print("\r\nUser's UID: ");
+	    String uid = scanner.nextLine();
+	    System.out.print("\r\nUser's Email: ");
+	    String email = scanner.nextLine();
+	    System.out.println(wipe);
+	    
+	    int uidInt = Integer.parseInt(uid);
+
+	    int response = sqlProc.admin_addNewAdmin(uidInt, email);
+
+	    if (response > -1) {
+		System.out.println("You've promoted user " + email + " to admin");
+		return;
+	    } else {
+		System.out.println("Oops, something went wrong.");
+		return;
+	    }
+
 	}
     }
     
