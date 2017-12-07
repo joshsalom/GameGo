@@ -106,7 +106,13 @@ CREATE TABLE Sales
 	FOREIGN KEY (gid)
 	REFERENCES games (gid)
 );
-DROP TABLE IF EXISTS archive_transactions
+DROP TABLE IF EXISTS Prizes;
+CREATE TABLE Prizes
+(
+    prize_name VARCHAR(50),
+    points_price INT
+);
+DROP TABLE IF EXISTS archive_transactions;
 CREATE TABLE archive_transactions
 (
 	tid INT PRIMARY KEY,
