@@ -295,6 +295,35 @@ public class DisplaySqlProc {
 	    return null;
 	}
     }
+    
+    public ArrayList<String> viewPrizes() {
+	try {
+	    ArrayList<String> gameList = new ArrayList<String>();
+	    CallableStatement cs = conn.prepareCall("{CALL viewPrizes()}");
+	    boolean hasResults = cs.execute();
+	    while (hasResults) {
+		ResultSet rs = cs.getResultSet();
+		System.out.println("TEST: " + rs);
+		System.out.println("-----Membership Exclusize Prizes-----");
+		while (rs.next()) {
+		    String prize_name = rs.getString("prize_name");
+		    int prize_points = rs.getInt("prize_points");
+
+		    
+		    String prize_nameFormat = String.format("%-20s|", prize_name);
+		    String prize_priceFormat = String.format("|%-5d|", prize_points);
+
+		    gameList.add(prize_nameFormat + prize_priceFormat);
+		}
+		hasResults = cs.getMoreResults();
+	    }
+	    return gameList;
+	} catch (Exception e) {
+	    // e.printStackTrace();
+	    return null;
+	}
+    }
+    
     /****** MEMBERSHIP DISPLAYS *********************************************************/
     
     public String viewMemberPoints(int mid) {

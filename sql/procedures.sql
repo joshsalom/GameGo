@@ -371,3 +371,8 @@ create procedure sumOfTransactionsByTwoDates(IN date1 varchar(50), IN date2 varc
 select sum(price) as revenue
 from transactions
 where date1 < date and date < date2;
+
+drop procedure if exists viewPrizes;
+create procedure viewPrizes()
+select * from prizes
+order by prize_name asc;

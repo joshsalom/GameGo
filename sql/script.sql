@@ -110,7 +110,7 @@ DROP TABLE IF EXISTS Prizes;
 CREATE TABLE Prizes
 (
     prize_name VARCHAR(50),
-    points_price INT
+    prize_points INT
 );
 DROP TABLE IF EXISTS archive_transactions;
 CREATE TABLE archive_transactions

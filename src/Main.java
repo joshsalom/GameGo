@@ -204,7 +204,7 @@ public class Main {
 		System.out.println(displaySqlProc.viewMemberPoints(currentMemberId));
 		break;
 	    case "2":
-		System.out.println("Awaiting Implementation");
+		printItemList(displaySqlProc.viewPrizes());
 		break;
 	    case "3":
 		System.out.println("Awaiting Implementation");
