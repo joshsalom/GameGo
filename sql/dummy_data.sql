@@ -90,6 +90,11 @@ SELECT uid, gid, price
 FROM users, games
 WHERE name = "R.O.B." and author = "Nintendo";
 
+CALL buyGame(3, 1);
+CALL buyGame(3, 2);
+CALL buyGame(3, 7);
+CALL buyGame(3, 8);
+
 CALL rentGame(2, 7);
 CALL rentGame(1, 5);
 
