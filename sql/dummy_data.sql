@@ -90,11 +90,8 @@ SELECT uid, gid, price
 FROM users, games
 WHERE name = "R.O.B." and author = "Nintendo";
 
-INSERT
-INTO rentals(mid, gid, date_due)
-SELECT mid, gid, '2018-12-31 23:59:59'
-FROM users natural join memberships, games
-WHERE name = "Charizard" and NOT (author = "Nintendo");
+CALL rentGame(2, 7);
+CALL rentGame(1, 5);
 
 INSERT INTO prizes(prize_name, prize_points)
 value("Mario Hat", 100);

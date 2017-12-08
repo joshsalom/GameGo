@@ -147,6 +147,11 @@ where gid = newGid;
 END //
 DELIMITER ;
 
+drop procedure if exists viewMemberRentals;
+create procedure viewMemberRentals(IN newMid INT)
+select * from rentals
+where mid = newMid;
+
 #Check stock count of game
 drop procedure if exists getGameStock;
 create procedure getGameStock(IN newTitle varchar(50), IN newAuthor varchar(50))
