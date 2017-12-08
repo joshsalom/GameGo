@@ -371,6 +371,26 @@ from games g1
 where g1.rating > (select avg(rating) from games g2 where g1.console_type=g2.console_type)
 order by title asc;
 
+#get current transactions
+drop procedure if exists viewTransactions;
+create procedure viewTransactions()
+select *
+from transactions;
+
+#get archived transactions
+drop procedure if exists vewArchiveTransactions;
+create procedure viewArchiveTransactions()
+select * 
+from archive_transactions;
+
+drop procedure if exists viewAllTransactions;
+create procedure viewAllTransactions()
+select *
+from transactions
+union
+select * 
+from archive_transactions;
+
 drop procedure if exists sumOfTransactionsByTwoDates;
 create procedure sumOfTransactionsByTwoDates(IN date1 varchar(50), IN date2 varchar(50))
 select sum(price) as revenue
