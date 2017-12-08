@@ -377,6 +377,19 @@ select sum(price) as revenue
 from transactions
 where date1 < date and date < date2;
 
+drop procedure if exists archiveTransactions;
+DELIMITER //
+create procedure archiveTransactions()
+BEGIN
+insert into archive_transactions(tid, uid, gid, cid, price, date)
+select tid, uid, gid, cid, price, date
+from transactions;
+delete
+from transactions
+where exists (select tid from archive_transactions);
+END //
+DELIMITER ;
+
 drop procedure if exists viewPrizes;
 create procedure viewPrizes()
 select * from prizes
