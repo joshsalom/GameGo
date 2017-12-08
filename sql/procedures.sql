@@ -377,13 +377,27 @@ select sum(price) as revenue
 from transactions
 where date between DATE(date1) and DATE(date2);
 
-drop procedure if exists archiveTransactions;
+drop procedure if exists archiveAllTransactions;
 DELIMITER //
-create procedure archiveTransactions()
+create procedure archiveAllTransactions()
 BEGIN
 insert into archive_transactions(tid, uid, gid, cid, price, date)
 select tid, uid, gid, cid, price, date
 from transactions;
+delete
+from transactions
+where exists (select tid from archive_transactions);
+END //
+DELIMITER ;
+
+drop procedure if exists archiveTransactionsByTwoDates;
+DELIMITER //
+create procedure archiveTransactionsByTwoDates(IN date1 varchar(50), IN date2 varchar(50))
+BEGIN
+insert into archive_transactions(tid, uid, gid, cid, price, date)
+select tid, uid, gid, cid, price, date
+from transactions
+where date between DATE(date1) and DATE(date2);
 delete
 from transactions
 where exists (select tid from archive_transactions);
