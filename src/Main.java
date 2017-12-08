@@ -800,11 +800,12 @@ public class Main {
 	while (true) {
 	    System.out.println("ADMIN Transactions Menu");
 	    System.out.println("Enter a key value to proceed:");
-	    System.out.println("[1] List all Transactions");
-	    System.out.println("[2] Search transactions by user");
-	    System.out.println("[3] Search transactions by game");
-	    System.out.println("[4] Search transactions by console");
-	    System.out.println("[5] Net Gross of Transactions");
+	    System.out.println("-- List Transactions by...");
+	    System.out.println("\t[1] tID [2] uID [3] gID [4] cID [5] Price [6] Date");
+	    System.out.println("-- Search Transactions by...");
+	    System.out.println("\t[7] tID [8] uID [9] gID [10] cID [11] Price [12] Date");
+	    System.out.println("[A] View Archived Transactions");
+	    System.out.println("[N] Net Gross of Transactions");
 	    System.out.println("[Q] Go back");
 	    
 	    String choice = scanner.nextLine();
@@ -812,19 +813,22 @@ public class Main {
 
 	    switch (choice.toLowerCase()) {
 	    case "1":
-		System.out.println("Awaiting Implementation");
+		printItemList(displaySqlProc.sortTransactionsBy("TID"));
 		break;
 	    case "2":
-		System.out.println("Awaiting Implementation");
+		printItemList(displaySqlProc.sortTransactionsBy("UID"));
 		break;
 	    case "3":
-		System.out.println("Awaiting Implementation");
+		printItemList(displaySqlProc.sortTransactionsBy("GID"));
 		break;
 	    case "4":
-		System.out.println("Awaiting Implementation");
+		printItemList(displaySqlProc.sortTransactionsBy("CID"));
 		break;
 	    case "5":
-		System.out.println("Awaiting Implementation");
+		printItemList(displaySqlProc.sortTransactionsBy("PRICE"));
+		break;
+	    case "6":
+		printItemList(displaySqlProc.sortTransactionsBy("DATE"));
 		break;
 	    case "q":
 		return;

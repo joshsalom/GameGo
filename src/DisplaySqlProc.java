@@ -90,6 +90,51 @@ public class DisplaySqlProc {
 	}
 
     }
+    
+    public ArrayList<String> sortTransactionsBy(String category) {
+	try {
+	    ArrayList<String> transactionList = new ArrayList<String>();
+	    CallableStatement cs = conn.prepareCall("{CALL sortTransactionsBy" + category + "()}");
+	    boolean hasResults = cs.execute();
+	    while (hasResults) {
+		ResultSet rs = cs.getResultSet();
+		
+		String tidFormat = String.format("|%-5s|", "tid");
+		String uidFormat = String.format("%-5s|", "uid");
+		String gidFormat = String.format("%-5s|", "gid");
+		String cidFormat = String.format("%-5s|", "cid");
+		String priceFormat = String.format("%-11s|", "Price");
+		String dateFormat = String.format("%-20s|", "Date");
+		transactionList.add(tidFormat + uidFormat + gidFormat + cidFormat + priceFormat + dateFormat);
+
+		
+		while (rs.next()) {
+		    int tid = rs.getInt("tid");
+		    int uid = rs.getInt("uid");
+		    int gid = rs.getInt("gid");
+		    int cid = rs.getInt("cid");
+		    double price = rs.getDouble("price");
+		    Date date = rs.getDate("date");
+
+		    tidFormat = String.format("|%-5d|", tid);
+		    uidFormat = String.format("%-5d|", uid);
+		    gidFormat = String.format("%-5d|", gid);
+		    cidFormat = String.format("%-5d|", cid);
+		    priceFormat = String.format("$%10.2f|", price);
+		    dateFormat = String.format("%-20s|", date.toString());
+
+		    transactionList.add(tidFormat + uidFormat + gidFormat + cidFormat + priceFormat + dateFormat);
+		}
+		hasResults = cs.getMoreResults();
+	    }
+	    return transactionList;
+	} catch (Exception e) {
+	    System.out.println("SOMETHING WENT WRONG: " + e);
+	    return null;
+	}
+
+    }
+    
     public void viewTransactionsById(int uid) {
 	try {
 	    CallableStatement cs = conn.prepareCall("{CALL viewGameTransactionsById(?)}");
