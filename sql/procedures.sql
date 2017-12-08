@@ -470,6 +470,80 @@ order by archive_transactions.date asc;
 
 ############ END TRANSACTION SORTING ############
 
+############ TRANSACTION SEARCHING ############
+
+drop procedure if exists searchAllTransactionsByTID;
+DELIMITER //
+create procedure searchAllTransactionsByTID(IN passedValue INT)
+BEGIN
+select *
+from transactions
+where tid = passedValue
+union
+select *
+from archive_transactions
+where tid = passedValue;
+END //
+DELIMITER ; 
+
+drop procedure if exists searchAllTransactionsByUID;
+DELIMITER //
+create procedure searchAllTransactionsByUID(IN passedValue INT)
+BEGIN
+select *
+from transactions
+where uid = passedValue
+union
+select *
+from archive_transactions
+where uid = passedValue;
+END //
+DELIMITER ; 
+
+drop procedure if exists searchAllTransactionsByGID;
+DELIMITER //
+create procedure searchAllTransactionsByGID(IN passedValue INT)
+BEGIN
+select *
+from transactions
+where gid = passedValue
+union
+select *
+from archive_transactions
+where gid = passedValue;
+END //
+DELIMITER ; 
+
+drop procedure if exists searchAllTransactionsByCID;
+DELIMITER //
+create procedure searchAllTransactionsByCID(IN passedValue INT)
+BEGIN
+select *
+from transactions
+where cid = passedValue
+union
+select *
+from archive_transactions
+where cid = passedValue;
+END //
+DELIMITER ;
+
+drop procedure if exists searchAllTransactionsByTWODATES;
+DELIMITER //
+create procedure searchAllTransactionsByTWODATES(IN date1 varchar(50), IN date2 varchar(50))
+BEGIN
+select *
+from transactions
+where date between DATE(date1) and DATE(date2)
+union
+select *
+from archive_transactions
+where date between DATE(date1) and DATE(date2);
+END //
+DELIMITER ;  
+
+############ END TRANSACTION SEARCHING ############
+
 drop procedure if exists sumOfTransactionsByTwoDates;
 create procedure sumOfTransactionsByTwoDates(IN date1 varchar(50), IN date2 varchar(50))
 select sum(price) as revenue
