@@ -375,7 +375,7 @@ drop procedure if exists sumOfTransactionsByTwoDates;
 create procedure sumOfTransactionsByTwoDates(IN date1 varchar(50), IN date2 varchar(50))
 select sum(price) as revenue
 from transactions
-where date1 < date and date < date2;
+where date between DATE(date1) and DATE(date2);
 
 drop procedure if exists archiveTransactions;
 DELIMITER //
@@ -396,7 +396,7 @@ select * from prizes
 order by prize_name asc;
 
 drop procedure if exists redeemPrize;
-create procedure redeemPrize(IN memberID INT, IN prizeID INT)
+create procedure redeemPrize(IN memberID TIMESTAMP, IN prizeID TIMESTAMP)
 update memberships
 set points = points - (select prize_points from prizes where pid = prizeID)
 where mid = memberID;
