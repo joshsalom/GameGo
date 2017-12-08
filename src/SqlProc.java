@@ -159,15 +159,15 @@ public class SqlProc {
 	    return "Something went wrong with buying the game";
 	}
     }
-    public String returnGameRental(int uid, int gid) {
+    public String returnGameRental(int mid, int gid) {
 	try {
 	    CallableStatement cs = conn.prepareCall("{CALL returnGameRental(?, ?)}");
-	    cs.setInt(1, uid);
+	    cs.setInt(1, mid);
 	    cs.setInt(2, gid);
 	    
 	    ResultSet rs = cs.executeQuery();
 	    rs.next();
-	    return "You returned your rental \"" + rs.getString("title") + "\" by " + rs.getString("author") + " for $" + rs.getDouble("price");
+	    return "You returned your rental \"" + rs.getString("title") + "\" by " + rs.getString("author");
 	} catch (Exception e) {
 	    e.printStackTrace();
 	    return "Something went wrong with buying the game";

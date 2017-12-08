@@ -149,7 +149,7 @@ public class Main {
 	    if (currentMemberId == -1) {
 		 System.out.println("[3] Sign up for GameGo membership");
 	    } else {
-		 System.out.println("[3] Membership Exclusives");
+		 System.out.println("[3] Your GameGo Membership");
 	    }
 	    System.out.println("[4] View purchase history");
 	    System.out.println("[Q] Log out");
@@ -210,7 +210,22 @@ public class Main {
 		printItemList(displaySqlProc.viewMemberRentals(currentMemberId));
 		break;
 	    case "4":
-		System.out.println("Awaiting Implementation");
+		if (isAdmin == true) {
+		    System.out.println("Invalid input, try again.");
+		} else {
+		    printItemList(displaySqlProc.viewMemberRentals(currentMemberId));
+		    System.out.println("Enter the game ID to return the rental.");
+		    System.out.println("Or, press [Q] to go back.");
+		    String gidString = scanner.nextLine();
+		    System.out.println(wipe);
+		    if (gidString.toLowerCase().equals("q")) {
+			break;
+		    } else {
+			int gidInt = Integer.parseInt(gidString);
+			String result = sqlProc.returnGameRental(currentMemberId, gidInt);
+			System.out.println(result);
+		    }
+		}
 		break;
 	    case "5":
 		System.out.println("Awaiting Implementation");
