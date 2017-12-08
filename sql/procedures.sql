@@ -383,6 +383,7 @@ create procedure viewArchiveTransactions()
 select * 
 from archive_transactions;
 
+#UNION between transaction and archive_transaction
 drop procedure if exists viewAllTransactions;
 create procedure viewAllTransactions()
 select *
@@ -390,6 +391,84 @@ from transactions
 union
 select * 
 from archive_transactions;
+
+############ TRANSACTION SORTING ############
+
+drop procedure if exists sortTransactionsByTID;
+create procedure sortTransactionsByTID()
+select *
+from transactions
+order by tid asc;
+
+drop procedure if exists sortTransactionsByUID;
+create procedure sortTransactionsByUID()
+select *
+from transactions
+order by uid asc;
+
+drop procedure if exists sortTransactionsByGID;
+create procedure sortTransactionsByGID()
+select *
+from transactions
+order by gid asc;
+
+drop procedure if exists sortTransactionsByCID;
+create procedure sortTransactionsByCID()
+select *
+from transactions
+order by cid asc;
+
+drop procedure if exists sortTransactionsByPRICE;
+create procedure sortTransactionsByPRICE()
+select *
+from transactions
+order by price asc;
+
+drop procedure if exists sortTransactionsByDATE;
+create procedure sortTransactionsByDATE()
+select *
+from transactions
+order by transactions.date asc;
+
+### Archive Sorting
+
+drop procedure if exists sortArchiveTransactionsByTID;
+create procedure sortArchiveTransactionsByTID()
+select *
+from archive_transactions
+order by tid asc;
+
+drop procedure if exists sortArchiveTransactionsByUID;
+create procedure sortArchiveTransactionsByUID()
+select *
+from archive_transactions
+order by uid asc;
+
+drop procedure if exists sortArchiveTransactionsByGID;
+create procedure sortArchiveTransactionsByGID()
+select *
+from archive_transactions
+order by gid asc;
+
+drop procedure if exists sortArchiveTransactionsByCID;
+create procedure sortArchiveTransactionsByCID()
+select *
+from archive_transactions
+order by cid asc;
+
+drop procedure if exists sortArchiveTransactionsByPRICE;
+create procedure sortArchiveTransactionsByPRICE()
+select *
+from archive_transactions
+order by price asc;
+
+drop procedure if exists sortArchiveTransactionsByDATE;
+create procedure sortArchiveTransactionsByDATE()
+select *
+from archive_transactions
+order by archive_transactions.date asc;
+
+############ END TRANSACTION SORTING ############
 
 drop procedure if exists sumOfTransactionsByTwoDates;
 create procedure sumOfTransactionsByTwoDates(IN date1 varchar(50), IN date2 varchar(50))
