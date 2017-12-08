@@ -96,17 +96,23 @@ SELECT mid, gid, '2018-12-31 23:59:59'
 FROM users natural join memberships, games
 WHERE name = "Charizard" and NOT (author = "Nintendo");
 
-INSERT INTO prizes
+INSERT INTO prizes(prize_name, prize_points)
 value("Mario Hat", 100);
 
-INSERT INTO prizes
+INSERT INTO prizes(prize_name, prize_points)
 value("Portal Gun", 500);
 
-INSERT INTO prizes
+INSERT INTO prizes(prize_name, prize_points)
 value("Smash Ball", 300);
 
-INSERT INTO prizes
-value("Rick and Morty Funko Pop", 1000);
+INSERT INTO prizes(prize_name, prize_points)
+value("Rick Funko Pop", 1000);
 
-INSERT INTO prizes
+INSERT INTO prizes(prize_name, prize_points)
+value("Morty Funko Pop", 1000);
+
+INSERT INTO prizes(prize_name, prize_points)
+value("Birdman Funko Pop", 1000);
+
+INSERT INTO prizes(prize_name, prize_points)
 value("Tri Force", 5000);

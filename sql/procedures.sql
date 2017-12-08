@@ -376,3 +376,9 @@ drop procedure if exists viewPrizes;
 create procedure viewPrizes()
 select * from prizes
 order by prize_name asc;
+
+drop procedure if exists redeemPrize;
+create procedure redeemPrize(IN memberID INT, IN prizeID INT)
+update memberships
+set points = points - (select prize_points from prizes where pid = prizeID)
+where mid = memberID;

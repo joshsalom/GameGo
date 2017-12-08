@@ -303,17 +303,17 @@ public class DisplaySqlProc {
 	    boolean hasResults = cs.execute();
 	    while (hasResults) {
 		ResultSet rs = cs.getResultSet();
-		System.out.println("TEST: " + rs);
-		System.out.println("-----Membership Exclusize Prizes-----");
+		System.out.println("-----Prizes for Points!!-----");
 		while (rs.next()) {
+		    int pid = rs.getInt("pid");
 		    String prize_name = rs.getString("prize_name");
 		    int prize_points = rs.getInt("prize_points");
 
-		    
+		    String pid_priceFormat = String.format("|%-5d|", pid);
 		    String prize_nameFormat = String.format("%-20s|", prize_name);
-		    String prize_priceFormat = String.format("|%-5d|", prize_points);
+		    String prize_priceFormat = String.format("%-5d|", prize_points);
 
-		    gameList.add(prize_nameFormat + prize_priceFormat);
+		    gameList.add(pid_priceFormat + prize_nameFormat + prize_priceFormat);
 		}
 		hasResults = cs.getMoreResults();
 	    }

@@ -113,6 +113,18 @@ public class SqlProc {
 	}
     }
     
+    public String redeemPrize(int mid, int pid) {
+	try {
+	    CallableStatement cs = conn.prepareCall("{CALL redeemPrize(?, ?)}");
+	    cs.setInt(1, mid);
+	    cs.setInt(2, pid);
+	    
+	    return "Enjoy your prize!\nThank you for being a valued GameGo Member!";
+	} catch (Exception e) {
+	    e.printStackTrace();
+	    return "Something went wrong with redeeming your prize.";
+	}
+    }    
     public int getMemberId(int uid) {
 	try {
 	    CallableStatement cs = conn.prepareCall("{CALL getMemberId(?)}");

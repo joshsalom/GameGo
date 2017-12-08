@@ -190,7 +190,7 @@ public class Main {
 	    System.out.println("Membership Menu");
 	    System.out.println("Enter a key value to proceed:");
 	    System.out.println("[1] Check Points");
-	    System.out.println("[2] Buy Prize");
+	    System.out.println("[2] Use Points");
 	    System.out.println("[3] Check Rentals");
 	    System.out.println("[4] Return Rentals");
 	    System.out.println("[5] End Membership");
@@ -204,7 +204,7 @@ public class Main {
 		System.out.println(displaySqlProc.viewMemberPoints(currentMemberId));
 		break;
 	    case "2":
-		printItemList(displaySqlProc.viewPrizes());
+		membershipPrizeMenu();
 		break;
 	    case "3":
 		System.out.println("Awaiting Implementation");
@@ -214,6 +214,50 @@ public class Main {
 		break;
 	    case "5":
 		System.out.println("Awaiting Implementation");
+		break;
+	    case "q":
+		return;
+	    default:
+		System.out.println("Invalid input, try again.");
+	    }
+
+	}
+    }
+    
+    public static void membershipPrizeMenu() {
+	while (true) {
+	    printItemList(displaySqlProc.viewPrizes());
+	    
+	    System.out.println("Membership Exclusive Prizes");
+	    System.out.println("Enter a key value to proceed:");
+	    System.out.println("[1] Check Points");
+	    System.out.println("[R] Redeem Prize");
+	    System.out.println("[Q] Go back");
+	    
+	    String choice = scanner.nextLine();
+	    System.out.println(wipe);
+
+	    switch (choice.toLowerCase()) {
+	    case "1":
+		System.out.println(displaySqlProc.viewMemberPoints(currentMemberId));
+		break;
+	    case "r":
+		if (isAdmin == true) {
+		    System.out.println("Invalid input, try again.");
+		} else {
+		    printItemList(displaySqlProc.viewPrizes());
+		    System.out.println("Enter the prize ID to redeem the prize.");
+		    System.out.println("Or, press [Q] to go back.");
+		    String pidString = scanner.nextLine();
+		    System.out.println(wipe);
+		    if (pidString.toLowerCase().equals("q")) {
+			break;
+		    } else {
+			int pidInt = Integer.parseInt(pidString);
+			String result = sqlProc.redeemPrize(currentMemberId, pidInt);
+			System.out.println(result);
+		    }
+		}
 		break;
 	    case "q":
 		return;

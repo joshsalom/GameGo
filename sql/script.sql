@@ -109,6 +109,7 @@ CREATE TABLE Sales
 DROP TABLE IF EXISTS Prizes;
 CREATE TABLE Prizes
 (
+    pid INT PRIMARY KEY AUTO_INCREMENT,
     prize_name VARCHAR(50),
     prize_points INT
 );
