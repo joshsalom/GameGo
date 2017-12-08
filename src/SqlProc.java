@@ -156,9 +156,22 @@ public class SqlProc {
 	    return "You rented the game \"" + rs.getString("title") + "\" by " + rs.getString("author") + " for $" + rs.getDouble("price");
 	} catch (Exception e) {
 	    e.printStackTrace();
-	    return "Something went wrong with buying the game";
+	    return "Something went wrong with renting the game";
 	}
     }
+    
+    public String endMembership(int mid){
+	try {
+	    CallableStatement cs = conn.prepareCall("{CALL endMembership(?)}");
+	    cs.setInt(1, mid);
+	    
+	    return "Sorry to see you go!\nThanks for being a valued GameGo Member!";
+	} catch (Exception e) {
+	    e.printStackTrace();
+	    return "Something went wrong with canceling your membership";
+	}
+    }
+    
     public String returnGameRental(int mid, int gid) {
 	try {
 	    CallableStatement cs = conn.prepareCall("{CALL returnGameRental(?, ?)}");
@@ -170,7 +183,7 @@ public class SqlProc {
 	    return "You returned your rental \"" + rs.getString("title") + "\" by " + rs.getString("author");
 	} catch (Exception e) {
 	    e.printStackTrace();
-	    return "Something went wrong with buying the game";
+	    return "Something went wrong with returning the rental game";
 	}
     }
     

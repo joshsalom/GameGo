@@ -186,7 +186,7 @@ public class Main {
     }
 
     public static void memberMenu() {
-	while (true) {
+	while (currentMemberId != -1) {
 	    System.out.println("Membership Menu");
 	    System.out.println("Enter a key value to proceed:");
 	    System.out.println("[1] Check Points");
@@ -228,7 +228,22 @@ public class Main {
 		}
 		break;
 	    case "5":
-		System.out.println("Awaiting Implementation");
+		if (isAdmin == true) {
+		    System.out.println("Invalid input, try again.");
+		} else {
+		    System.out.println("Are you sure you want to end your membership?");
+		    System.out.println("[Y] Yes | [N] No");
+		    System.out.println("Or, press [Q] to go back.");
+		    String gidString = scanner.nextLine();
+		    System.out.println(wipe);
+		    if (!gidString.toLowerCase().equals("y")) {
+			break;
+		    } else {
+			String result = sqlProc.endMembership(currentMemberId);
+			System.out.println(result);
+			currentMemberId = -1;
+		    }
+		}
 		break;
 	    case "q":
 		return;
@@ -240,7 +255,7 @@ public class Main {
     }
     
     public static void membershipPrizeMenu() {
-	while (true) {
+	while (currentMemberId != 1) {
 	    printItemList(displaySqlProc.viewPrizes());
 	    
 	    System.out.println("Membership Exclusive Prizes");
