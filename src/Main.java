@@ -207,7 +207,7 @@ public class Main {
 		membershipPrizeMenu();
 		break;
 	    case "3":
-		System.out.println("Awaiting Implementation");
+		printItemList(displaySqlProc.viewMemberRentals(currentMemberId));
 		break;
 	    case "4":
 		System.out.println("Awaiting Implementation");

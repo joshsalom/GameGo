@@ -149,7 +149,7 @@ DELIMITER ;
 
 drop procedure if exists viewMemberRentals;
 create procedure viewMemberRentals(IN newMid INT)
-select * from rentals
+select * from rentals natural join games
 where mid = newMid;
 
 #Check stock count of game

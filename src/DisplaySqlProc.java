@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.sql.Date;
 import java.util.*;
 import javax.sql.DataSource;
 
@@ -342,6 +343,40 @@ public class DisplaySqlProc {
 	} catch (Exception e) {
 	    // e.printStackTrace();
 	    return "ERR";
+	}
+
+    }
+    
+    public ArrayList<String> viewMemberRentals(int mid) {
+	try {
+	    ArrayList<String> gameList = new ArrayList<String>();
+	    CallableStatement cs = conn.prepareCall("{CALL viewMemberRentals(?)}");
+	    cs.setInt(1, mid);
+	    boolean hasResults = cs.execute();
+	    while (hasResults) {
+		ResultSet rs = cs.getResultSet();
+		System.out.println("-----Currently Rented Games-----");
+		while (rs.next()) {
+		    int gid = rs.getInt("gid");
+		    String title = rs.getString("title");
+		    String author = rs.getString("author");
+		    String genre = rs.getString("genre");
+		    Date due_date = rs.getDate("date_due");
+
+		    String gidFormat = String.format("|%-5d|", gid);
+		    String titleFormat = String.format("%-20s|", title);
+		    String authorFormat = String.format("%-15s|", author);
+		    String genreFormat = String.format("%-10s|", genre);
+		    String dateFormat = String.format("%-15s|", due_date.toString());
+
+		    gameList.add(gidFormat + titleFormat + authorFormat + genreFormat + dateFormat);
+		}
+		hasResults = cs.getMoreResults();
+	    }
+	    return gameList;
+	} catch (Exception e) {
+	    // e.printStackTrace();
+	    return null;
 	}
 
     }

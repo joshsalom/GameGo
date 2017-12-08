@@ -124,7 +124,8 @@ public class SqlProc {
 	    e.printStackTrace();
 	    return "Something went wrong with redeeming your prize.";
 	}
-    }    
+    }
+    
     public int getMemberId(int uid) {
 	try {
 	    CallableStatement cs = conn.prepareCall("{CALL getMemberId(?)}");
