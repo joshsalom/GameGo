@@ -883,6 +883,9 @@ public class Main {
 	    case "a":
 		admin_archiveTransactionsMenu();
 		break;
+	    case "n":
+		System.out.println(sqlProc.sumOfTransactions());
+		break;
 	    case "q":
 		return;
 	    default:

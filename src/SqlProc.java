@@ -189,6 +189,19 @@ public class SqlProc {
 	}
     }
     
+    public String sumOfTransactions() {
+	try {
+	    CallableStatement cs = conn.prepareCall("{CALL sumOfTransactions()}");
+	    
+	    ResultSet rs = cs.executeQuery();
+	    rs.next();
+	    return "The Net Gross of current Transactions is: " + rs.getInt("revenue");
+	} catch (Exception e) {
+	    e.printStackTrace();
+	    return "Something went wrong with archiving the transactions";
+	}
+    }
+    
     public String archiveAllTransactions() {
 	try {
 	    CallableStatement cs = conn.prepareCall("{CALL archiveAllTransactions()}");

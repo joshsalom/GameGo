@@ -544,6 +544,11 @@ DELIMITER ;
 
 ############ END TRANSACTION SEARCHING ############
 
+drop procedure if exists sumOfTransactions;
+create procedure sumOfTransactions()
+select sum(price) as revenue
+from transactions;
+
 drop procedure if exists sumOfTransactionsByTwoDates;
 create procedure sumOfTransactionsByTwoDates(IN date1 varchar(50), IN date2 varchar(50))
 select sum(price) as revenue
