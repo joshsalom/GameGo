@@ -802,7 +802,7 @@ public class Main {
 	    System.out.println("Enter a key value to proceed:");
 	    System.out.println("-- List Transactions by...");
 	    System.out.println("\t[1] tID [2] uID [3] gID [4] cID [5] Price [6] Date");
-	    System.out.println("-- Search Transactions by...");
+	    System.out.println("-- Search Transactions and Archive by...");
 	    System.out.println("\t[7] tID [8] uID [9] gID [10] cID [11] Date");
 	    System.out.println("[A] View Archive Transactions Menu");
 	    System.out.println("[N] Net Gross of Transactions");
@@ -879,7 +879,9 @@ public class Main {
 		if(choice2.toLowerCase().equals("q"))
 		    break;
 		printItemList(displaySqlProc.searchAllTransactionsByDate(choice1, choice2));
-
+	   	break;
+	    case "a":
+		admin_archiveTransactionsMenu();
 		break;
 	    case "q":
 		return;
@@ -889,6 +891,60 @@ public class Main {
 
 	}
     }
+    
+    public static void admin_archiveTransactionsMenu() {
+	while (true) {
+	    System.out.println("ADMIN Archive Transactions Menu");
+	    System.out.println("Enter a key value to proceed:");
+	    System.out.println("-- List Archive Transactions by...");
+	    System.out.println("\t[1] tID [2] uID [3] gID [4] cID [5] Price [6] Date");
+	    System.out.println("[A] Archive All Current Transactions Menu");
+	    System.out.println("[B] Archive Current Transactions by Date Range");
+	    System.out.println("[Q] Go back");
+	    
+	    String choice = scanner.nextLine();
+	    System.out.println(wipe);
+
+	    switch (choice.toLowerCase()) {
+	    case "1":
+		printItemList(displaySqlProc.sortArchiveTransactionsBy("TID"));
+		break;
+	    case "2":
+		printItemList(displaySqlProc.sortArchiveTransactionsBy("UID"));
+		break;
+	    case "3":
+		printItemList(displaySqlProc.sortArchiveTransactionsBy("GID"));
+		break;
+	    case "4":
+		printItemList(displaySqlProc.sortArchiveTransactionsBy("CID"));
+		break;
+	    case "5":
+		printItemList(displaySqlProc.sortArchiveTransactionsBy("PRICE"));
+		break;
+	    case "6":
+		printItemList(displaySqlProc.sortArchiveTransactionsBy("DATE"));
+		break;
+	    case "a":
+		break;
+	    case "b":
+		System.out.println("Enter first date (in YYYY-MM-DD format)\nOr Q to Cancel");
+		String choice1 = scanner.nextLine();
+		if(choice1.toLowerCase().equals("q"))
+		    break;
+		System.out.println("Enter second date (in YYYY-MM-DD format)\nOr Q to Cancel");
+		String choice2 = scanner.nextLine();
+		if(choice2.toLowerCase().equals("q"))
+		    break;
+		printItemList(displaySqlProc.searchAllTransactionsByDate(choice1, choice2));
+	   	break;
+	    case "q":
+		return;
+	    default:
+		System.out.println("Invalid input, try again.");
+	    }
+	}
+    }
+    
     public static void admin_statisticsMenu() {
 	while (true) {
 	    System.out.println("ADMIN Statistics Menu");
