@@ -165,6 +165,8 @@ public class SqlProc {
 	    CallableStatement cs = conn.prepareCall("{CALL endMembership(?)}");
 	    cs.setInt(1, mid);
 	    
+	    cs.executeQuery();
+	    
 	    return "Sorry to see you go!\nThanks for being a valued GameGo Member!";
 	} catch (Exception e) {
 	    e.printStackTrace();
@@ -184,6 +186,34 @@ public class SqlProc {
 	} catch (Exception e) {
 	    e.printStackTrace();
 	    return "Something went wrong with returning the rental game";
+	}
+    }
+    
+    public String archiveAllTransactions() {
+	try {
+	    CallableStatement cs = conn.prepareCall("{CALL archiveAllTransactions()}");
+	    
+	    cs.executeQuery();
+	    
+	    return "All current transactions has been archived.";
+	} catch (Exception e) {
+	    e.printStackTrace();
+	    return "Something went wrong with archiving the transactions";
+	}
+    }
+    
+    public String archiveTransactionsByTwoDates(String date1, String date2) {
+	try {
+	    CallableStatement cs = conn.prepareCall("{CALL archiveTransactionsByTwoDates(?, ?)}");
+	    cs.setString(1, date1);
+	    cs.setString(2, date2);
+	    
+	    cs.executeQuery();
+	    
+	    return "All current transactions between " + date1 + " and " + date2 + " has been archived.";
+	} catch (Exception e) {
+	    e.printStackTrace();
+	    return "Something went wrong with archiving the transactions";
 	}
     }
     

@@ -925,18 +925,33 @@ public class Main {
 		printItemList(displaySqlProc.sortArchiveTransactionsBy("DATE"));
 		break;
 	    case "a":
+		System.out.println("Are you sure you want to archive all current transactions?");
+		System.out.println("[Y] Yes | [N] No");
+		System.out.println("Or, press [Q] to go back.");
+		choice = scanner.nextLine();
+		System.out.println(wipe);
+		if (!choice.toLowerCase().equals("y")) 
+			break;
+		System.out.println(sqlProc.archiveAllTransactions());
 		break;
 	    case "b":
-		System.out.println("Enter first date (in YYYY-MM-DD format)\nOr Q to Cancel");
+		System.out.println("Enter first date (in YYYY-MM-DD format)\nOr [Q] to Cancel");
 		String choice1 = scanner.nextLine();
 		if(choice1.toLowerCase().equals("q"))
 		    break;
-		System.out.println("Enter second date (in YYYY-MM-DD format)\nOr Q to Cancel");
+		System.out.println("Enter second date (in YYYY-MM-DD format)\nOr [Q] to Cancel");
 		String choice2 = scanner.nextLine();
 		if(choice2.toLowerCase().equals("q"))
 		    break;
-		printItemList(displaySqlProc.searchAllTransactionsByDate(choice1, choice2));
-	   	break;
+		System.out.println("Are you sure you want to archive the transactions?");
+		System.out.println("[Y] Yes | [N] No");
+		System.out.println("Or, press [Q] to go back.");
+		choice = scanner.nextLine();
+		System.out.println(wipe);
+		if (!choice.toLowerCase().equals("y")) 
+			break;
+		System.out.println(sqlProc.archiveTransactionsByTwoDates(choice1, choice2));
+		break;
 	    case "q":
 		return;
 	    default:
