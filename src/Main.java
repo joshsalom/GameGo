@@ -681,8 +681,8 @@ public class Main {
 	while (true) {
 	    System.out.println("ADMIN Membership Menu");
 	    System.out.println("Enter a key value to proceed:");
-	    System.out.println("[1] Browse games, [2] Browse consoles, [3] Modify Inventory");
-	    System.out.println("View [4]Memberships, [5]Rentals, [6]Sales, [7]Transactions, [8]Statistics");
+	    System.out.println("[1] Browse games\n[2] Browse consoles\n[3] Modify Inventory");
+	    System.out.println("View\n[4]Memberships\n[5]Rentals\n[6]Sales\n[7]Transactions\n[8]Statistics");
 	    System.out.println("[9] Promote user to admin");
 	    System.out.println("[Q] Log out");
 	    
@@ -803,8 +803,8 @@ public class Main {
 	    System.out.println("-- List Transactions by...");
 	    System.out.println("\t[1] tID [2] uID [3] gID [4] cID [5] Price [6] Date");
 	    System.out.println("-- Search Transactions by...");
-	    System.out.println("\t[7] tID [8] uID [9] gID [10] cID [11] Price [12] Date");
-	    System.out.println("[A] View Archived Transactions");
+	    System.out.println("\t[7] tID [8] uID [9] gID [10] cID [11] Date");
+	    System.out.println("[A] View Archive Transactions Menu");
 	    System.out.println("[N] Net Gross of Transactions");
 	    System.out.println("[Q] Go back");
 	    
@@ -829,6 +829,57 @@ public class Main {
 		break;
 	    case "6":
 		printItemList(displaySqlProc.sortTransactionsBy("DATE"));
+		break;
+	    case "7":
+		System.out.println("Enter tID\nOr Q to Cancel");
+		choice = scanner.nextLine();
+		if(choice.toLowerCase().equals("q"))
+		    break;
+		else{
+		    printItemList(displaySqlProc.searchAllTransactionsBy("TID", Integer.parseInt(choice)));
+		    System.out.println(wipe);
+		}
+		break;
+	    case "8":
+		System.out.println("Enter uID\nOr Q to Cancel");
+		choice = scanner.nextLine();
+		if(choice.toLowerCase().equals("q"))
+		    break;
+		else{
+		    printItemList(displaySqlProc.searchAllTransactionsBy("UID", Integer.parseInt(choice)));
+		    System.out.println(wipe);
+		}
+		break;
+	    case "9":
+		System.out.println("Enter gID\nOr Q to Cancel");
+		choice = scanner.nextLine();
+		if(choice.toLowerCase().equals("q"))
+		    break;
+		else{
+		    printItemList(displaySqlProc.searchAllTransactionsBy("GID", Integer.parseInt(choice)));
+		    System.out.println(wipe);
+		}
+		break;
+	    case "10":
+		System.out.println("Enter cID\nOr Q to Cancel");
+		choice = scanner.nextLine();
+		if(choice.toLowerCase().equals("q"))
+		    break;
+		else{
+		    printItemList(displaySqlProc.searchAllTransactionsBy("CID", Integer.parseInt(choice)));
+		}
+		break;
+	    case "11":
+		System.out.println("Enter first date (in YYYY-MM-DD format)\nOr Q to Cancel");
+		String choice1 = scanner.nextLine();
+		if(choice1.toLowerCase().equals("q"))
+		    break;
+		System.out.println("Enter second date (in YYYY-MM-DD format)\nOr Q to Cancel");
+		String choice2 = scanner.nextLine();
+		if(choice2.toLowerCase().equals("q"))
+		    break;
+		printItemList(displaySqlProc.searchAllTransactionsByDate(choice1, choice2));
+
 		break;
 	    case "q":
 		return;
