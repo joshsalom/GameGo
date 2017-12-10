@@ -592,3 +592,193 @@ create procedure redeemPrize(IN memberID TIMESTAMP, IN prizeID TIMESTAMP)
 update memberships
 set points = points - (select prize_points from prizes where pid = prizeID)
 where mid = memberID;
+
+#view rented games
+drop procedure if exists viewRentedGames;
+create procedure viewRentedGames()
+select * from rentals
+order by rid;
+
+#Search rentals by email
+drop procedure if exists searchRentalsByEmail;
+create procedure searchRentalsByEmail(IN newEmail varchar(50))
+select * from rentals 
+where rentals.email LIKE CONCAT('%', newEmail, '%');
+
+#Search rentals by gid
+drop procedure if exists searchRentalsByGid;
+create procedure searchRentalsByGid(IN newGid INT)
+select * from rentals 
+where rentals.gid LIKE CONCAT('%', newGid, '%');
+
+#view rented games with the renter's name
+drop procedure if exists viewOverdueRentals;
+create procedure viewOverdueRentals()
+select rid, mid, gid, date_due, users.name
+from rentals
+inner join memberships on memberships.mid = rentals.mid
+inner join users on users.uid = memberships.uid
+where date_due < CURDATE();
+
+#view games on sale by title
+drop procedure if exists viewGamesOnSaleByTitle;
+create procedure viewGamesOnSaleByTitle()
+select * from games natural join sales
+order by title asc;
+
+#add new sale
+drop procedure if exists admin_addNewSale;
+DELIMITER //
+create procedure admin_addNewSale(IN newGid INT, IN newDiscount DOUBLE)
+BEGIN
+insert into sales (gid, discount, originalPrice)
+select gid, newDiscount, price as origPrice
+from games
+where gid = newGid;
+update games
+set price = price * newDiscount
+where gid = oldGid;
+END //
+DELIMITER ;
+
+#remove sale
+drop procedure if exists admin_removeSale;
+DELIMITER //
+create procedure admin_removeSale(IN newGid INT)
+BEGIN
+update games 
+set price = (select originalPrice from sales where gid = newGid) 
+where gid = newGid;
+delete from sales
+where gid = newGid;
+END //
+DELIMITER ;
+
+#update sale gid
+drop procedure if exists admin_updateSaleGid;
+create procedure admin_updateSaleGid(IN oldGid INT, IN newGid INT)
+update sales
+set gid = newGid
+where gid = oldGid;
+
+#update sale discount
+drop procedure if exists admin_updateSaleDiscount;
+create procedure admin_updateSaleDiscount(IN oldGid INT, IN newDiscount DOUBLE(6, 2))
+update sales
+set discount = newDiscount
+where gid = oldGid;
+
+#update sale orignal price
+drop procedure if exists admin_updateSaleOriginalPrice;
+create procedure admin_updateSaleOriginalPrice(IN oldGid INT, IN newOriginalPrice DOUBLE(6, 2))
+update sales
+set originalPrice = newOriginalPrice
+where gid = oldGid;
+
+# insert game into inventory
+drop procedure if exists inventoryInsertGame;
+DELIMITER //
+create procedure inventoryInsertGame(IN newTitle varchar(50), IN newAuthor varchar(50), IN newGenre varchar(50),
+IN newConsoleType varchar(50), IN newRating INT, IN newPrice DOUBLE(6, 2), IN newStock INT)
+BEGIN
+insert into games
+values (null, newTitle, newAuthor, newGenre, newConsoleType, 0, newPrice, newStock);
+select title, price from games
+where games.title = newTitle and games.price = newPrice;
+END //
+DELIMITER ;
+
+#remove game
+drop procedure if exists inventoryDeleteGame;
+create procedure inventoryDeleteGame(IN oldGid INT, IN oldTitle varchar(50))
+delete from games
+where gid = oldGid and title = oldTitle;
+
+# insert game into inventory
+drop procedure if exists inventoryInsertConsole;
+DELIMITER //
+create procedure inventoryInsertConsole(IN newName varchar(50), IN newPrice DOUBLE(6, 2), IN newStock INT)
+BEGIN
+insert into consoles
+values (null, newName, newPrice, newStock);
+select name, price from consoles
+where consoles.name = newName and consoles.price = newPrice;
+END //
+DELIMITER ;
+
+#remove console
+drop procedure if exists inventoryDeleteConsole;
+create procedure inventoryDeleteConsole(IN oldCid INT)
+delete from consoles
+where gid = oldCid;
+
+
+#update game title
+drop procedure if exists updateGameTitle;
+create procedure updateGameTitle(IN oldGid INT, IN newTitle varchar(50))
+update games
+set title = newTitle
+where gid = oldGid;
+
+#update game author
+drop procedure if exists updateGameAuthor;
+create procedure updateGameAuthor(IN oldGid INT, IN newAuthor varchar(50))
+update games
+set author = newAuthor
+where gid = oldGid;
+
+#update game genre
+drop procedure if exists updateGameGenre;
+create procedure updateGameGenre(IN oldGid INT, IN newGenre varchar(50))
+update games
+set genre = newGenre
+where gid = oldGid;
+
+#update game console type
+drop procedure if exists updateGameConsoleType;
+create procedure updateGameConsoleType(IN oldGid INT, IN newConsoleType varchar(50))
+update games
+set console_type = newConsoleType
+where gid = oldGid;
+
+#update game rating
+drop procedure if exists updateGameRating;
+create procedure updateGameRating(IN oldGid INT, IN newRating INT)
+update games
+set rating = newRating
+where gid = oldGid;
+
+#update game price
+drop procedure if exists updateGamePrice;
+create procedure updateGamePrice(IN oldGid INT, IN newPrice DOUBLE(6, 2))
+update games
+set price = newPrice
+where gid = oldGid;
+
+#update game stock
+drop procedure if exists updateGameStock;
+create procedure updateGameStock(IN oldGid INT, IN newStock INT)
+update games
+set stock = newStock
+where gid = oldGid;
+
+
+#update console name
+drop procedure if exists updateConsoleName;
+create procedure updateConsoleName(IN oldName varchar(50), IN newName varchar(50))
+update consoles
+set title = newName
+where name = oldName;
+
+drop procedure if exists updateConsolePrice;
+create procedure updateConsolePrice(IN oldName varchar(50), IN newPrice DOUBLE(6, 2))
+update consoles
+set price = newPrice
+where name = oldName;
+
+#update console name
+drop procedure if exists updateConsoleStock;
+create procedure updateConsoleStock(IN oldName varchar(50), IN newStock INT)
+update consoles
+set stock = newStock
+where name = oldName;

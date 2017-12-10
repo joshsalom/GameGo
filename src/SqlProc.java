@@ -244,4 +244,311 @@ public class SqlProc {
 	    return -1;
 	}
     }
+    
+    public String admin_addNewSale(int gid, double discount) {
+    	try {
+    	    CallableStatement cs = conn.prepareCall("{CALL admin_addNewSale(?, ?)}");
+    	    cs.setInt(1, gid);
+    	    cs.setDouble(2, discount);
+    	    
+    	    ResultSet rs = cs.executeQuery();
+    	    rs.next();
+    	    return "You added the game with gid " + gid + " to sales with a " + discount + " discount.";
+    	} catch (Exception e) {
+    	    e.printStackTrace();
+    	    return "Something went wrong with adding the sale";
+    	}
+    }
+        
+        public String admin_removeSale(int gid){
+        	try{
+        		CallableStatement cs = conn.prepareCall("{CALL admin_removeSale(?)}");
+        		cs.setInt(1, gid);
+        		ResultSet rs = cs.executeQuery();
+        	    rs.next();
+        	    return "You removed the game with gid " + gid;
+        	} catch (Exception e){
+        		e.printStackTrace();
+        		return "Something went wrong with removing the sake";
+        	}
+        }
+        
+        public String admin_updateSaleGid(int gidInt, int newGid){
+        	try{
+        		CallableStatement cs = conn.prepareCall("{CALL admin_updateSaleGid(?, ?)}");
+        		cs.setInt(1, gidInt);
+        		cs.setInt(2, newGid);
+        		
+        		ResultSet rs = cs.executeQuery();
+        		rs.next();
+        		return "You've updated this sale's gid";
+        	} catch(Exception e) {
+        		e.printStackTrace();
+        		return "Something went wrong with updating the sale";
+        	}
+        }
+        
+        public String admin_updateSaleDiscount(int gidInt, double newDiscount){
+        	try{
+        		CallableStatement cs = conn.prepareCall("{CALL admin_updateSaleDiscount(?, ?)}");
+        		cs.setInt(1, gidInt);
+        		cs.setDouble(2, newDiscount);
+        		
+        		ResultSet rs = cs.executeQuery();
+        		rs.next();
+        		return "You updated this sale's discount";
+        	} catch(Exception e) {
+        		e.printStackTrace();
+        		return "Something went wrong with updating the sale";
+        	}
+        }
+        
+        public String admin_updateSaleOriginalPrice(int gidInt, double newOriginalPrice){
+        	try{
+        		CallableStatement cs = conn.prepareCall("{CALL admin_updateSaleOriginalPrice(?, ?)}");
+        		cs.setInt(1, gidInt);
+        		cs.setDouble(2, newOriginalPrice);
+        		
+        		ResultSet rs = cs.executeQuery();
+        		rs.next();
+        		return "You updated this sale's original price";
+        	} catch(Exception e) {
+        		e.printStackTrace();
+        		return "Something went wrong with updating the sale";
+        	}
+        }
+        
+        
+        /********* Modifying inventory********/
+        public double inventoryInsertGame(String title, String author, String genre, 
+        		String console_type, int rating, double price, int stock){
+        	try{
+        		CallableStatement cs = conn.prepareCall("{CALL inventoryInsertGame(?, ?, ?, ?, ?, ?, ?)}");
+        		cs.setString(1, title);
+        		cs.setString(2, author);
+        		cs.setString(3, genre);
+        		cs.setString(4, console_type);
+        		cs.setInt(5, rating);
+        		cs.setDouble(6, price);
+        		cs.setInt(7, stock);
+        		
+        		ResultSet rs = cs.executeQuery();
+        		rs.next();
+        		return rs.getDouble("price");
+        	} catch(Exception e) {
+        		//e.printStackTrace();
+        		return -1.0;
+        	}
+        }
+        
+        public String inventoryDeleteGame(int gid, String title){
+        	try{
+        		CallableStatement cs = conn.prepareCall("{CALL inventoryDeleteGame(?, ?)}");
+        		cs.setInt(1, gid);
+        		cs.setString(2, title);
+        		
+        		ResultSet rs = cs.executeQuery();
+        		rs.next();
+        		return "You've deleted " + title + " from the game listings.";
+        	} catch(Exception e) {
+        		e.printStackTrace();
+        		return "Something went wrong with deleting the game";
+        	}
+        }
+        
+        public double inventoryInsertConsole(String name, double price, int stock){
+        	try{
+        		CallableStatement cs = conn.prepareCall("{CALL inventoryInsertConsole(?, ?, ?)}");
+        		cs.setString(1, name);
+        		cs.setDouble(2, price);
+        		cs.setInt(3, stock);
+        		
+        		ResultSet rs = cs.executeQuery();
+        		rs.next();
+        		return rs.getDouble("price");
+        	} catch(Exception e) {
+        		//e.printStackTrace();
+        		return -1.0;
+        	}
+        }
+        
+        public String inventoryDeleteConsole(String name){
+        	try{
+        		CallableStatement cs = conn.prepareCall("{CALL inventoryDeleteConsole(?)}");
+        		cs.setString(1, name);
+        		
+        		ResultSet rs = cs.executeQuery();
+        		rs.next();
+        		return "You've deleted " + name + " from the console list.";
+        	} catch(Exception e) {
+        		e.printStackTrace();
+        		return "Something went wrong with deleting the console";
+        	}
+        }
+        
+        /*public String updateGameGid(int gidInt, int newGid){
+        	try{
+        		CallableStatement cs = conn.prepareCall("{CALL updateGameGid(?, ?)}");
+        		cs.setInt(1, gidInt);
+        		cs.setInt(2, newGid);
+        		
+        		ResultSet rs = cs.executeQuery();
+        		rs.next();
+        		return "You updated this game's gid";
+        	} catch(Exception e) {
+        		e.printStackTrace();
+        		return "Something went wrong with updating the gid";
+        	}
+        }*/
+        
+        public String updateGameTitle(int gidInt, String newTitle){
+        	try{
+        		CallableStatement cs = conn.prepareCall("{CALL updateGameTitle(?, ?)}");
+        		cs.setInt(1, gidInt);
+        		cs.setString(2, newTitle);
+        		
+        		ResultSet rs = cs.executeQuery();
+        		rs.next();
+        		return "You updated this game's title";
+        	} catch(Exception e) {
+        		e.printStackTrace();
+        		return "Something went wrong with updating the title";
+        	}
+        }
+        
+        public String updateGameAuthor(int gidInt, String newAuthor){
+        	try{
+        		CallableStatement cs = conn.prepareCall("{CALL updateGameAuthor(?, ?)}");
+        		cs.setInt(1, gidInt);
+        		cs.setString(2, newAuthor);
+        		
+        		ResultSet rs = cs.executeQuery();
+        		rs.next();
+        		return "You updated this game's author";
+        	} catch(Exception e) {
+        		e.printStackTrace();
+        		return "Something went wrong with updating the author";
+        	}
+        }
+        
+        public String updateGameGenre(int gidInt, String newGenre){
+        	try{
+        		CallableStatement cs = conn.prepareCall("{CALL updateGameGenre(?, ?)}");
+        		cs.setInt(1, gidInt);
+        		cs.setString(2, newGenre);
+        		
+        		ResultSet rs = cs.executeQuery();
+        		rs.next();
+        		return "You updated this game's genre";
+        	} catch(Exception e) {
+        		e.printStackTrace();
+        		return "Something went wrong with updating the genre";
+        	}
+        }
+        
+        public String updateGameConsoleType(int gidInt, String newConsoleType){
+        	try{
+        		CallableStatement cs = conn.prepareCall("{CALL updateConsoleType(?, ?)}");
+        		cs.setInt(1, gidInt);
+        		cs.setString(2, newConsoleType);
+        		
+        		ResultSet rs = cs.executeQuery();
+        		rs.next();
+        		return "You updated this game's console type";
+        	} catch(Exception e) {
+        		e.printStackTrace();
+        		return "Something went wrong with updating the console type";
+        	}
+        }
+        
+        public String updateGameRating(int gidInt, int newRating){
+        	try{
+        		CallableStatement cs = conn.prepareCall("{CALL updateGameRating(?, ?)}");
+        		cs.setInt(1, gidInt);
+        		cs.setInt(2, newRating);
+        		
+        		ResultSet rs = cs.executeQuery();
+        		rs.next();
+        		return "You updated this game's rating";
+        	} catch(Exception e) {
+        		e.printStackTrace();
+        		return "Something went wrong with updating the rating";
+        	}
+        }
+        
+        public String updateGamePrice(int gidInt, double newPrice){
+        	try{
+        		CallableStatement cs = conn.prepareCall("{CALL updateGamePrice(?, ?)}");
+        		cs.setInt(1, gidInt);
+        		cs.setDouble(2, newPrice);
+        		
+        		ResultSet rs = cs.executeQuery();
+        		rs.next();
+        		return "You updated this game's price";
+        	} catch(Exception e) {
+        		e.printStackTrace();
+        		return "Something went wrong with updating the price";
+        	}
+        }
+        
+        public String updateGameStock(int gidInt, int newStock){
+        	try{
+        		CallableStatement cs = conn.prepareCall("{CALL updateGameStock(?, ?)}");
+        		cs.setInt(1, gidInt);
+        		cs.setInt(2, newStock);
+        		
+        		ResultSet rs = cs.executeQuery();
+        		rs.next();
+        		return "You updated this game's stock";
+        	} catch(Exception e) {
+        		e.printStackTrace();
+        		return "Something went wrong with updating the stock";
+        	}
+        }
+        
+        
+        public String updateConsoleName(String name, String newName){
+        	try{
+        		CallableStatement cs = conn.prepareCall("{CALL updateConsoleName(?, ?)}");
+        		cs.setString(1, name);
+        		cs.setString(2, newName);
+        		
+        		ResultSet rs = cs.executeQuery();
+        		rs.next();
+        		return "You updated this console's name";
+        	} catch(Exception e) {
+        		e.printStackTrace();
+        		return "Something went wrong with updating the name";
+        	}
+        }
+        
+        public String updateConsolePrice(String name, double newPrice){
+        	try{
+        		CallableStatement cs = conn.prepareCall("{CALL updateConsolePrice(?, ?)}");
+        		cs.setString(1, name);
+        		cs.setDouble(2, newPrice);
+        		
+        		ResultSet rs = cs.executeQuery();
+        		rs.next();
+        		return "You updated this console's price";
+        	} catch(Exception e) {
+        		e.printStackTrace();
+        		return "Something went wrong with updating the price";
+        	}
+        }
+        
+        public String updateConsoleStock(String name, int newStock){
+        	try{
+        		CallableStatement cs = conn.prepareCall("{CALL updateConsoleStock(?, ?)}");
+        		cs.setString(1, name);
+        		cs.setInt(2, newStock);
+        		
+        		ResultSet rs = cs.executeQuery();
+        		rs.next();
+        		return "You updated this console's stock";
+        	} catch(Exception e) {
+        		e.printStackTrace();
+        		return "Something went wrong with updating the stock";
+        	}
+        }
 }

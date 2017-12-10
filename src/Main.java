@@ -697,16 +697,16 @@ public class Main {
 		browseConsolesMenu();
 		break;
 	    case "3":
-		System.out.println("Modify Inventory");
+	    modifyInventoryMenu();
 		break;
 	    case "4":
 		admin_membershipsMenu();
 		break;
 	    case "5":
-		System.out.println("View Rentals");
+	    adminRentalMenu();
 		break;
 	    case "6":
-		System.out.println("View Sales");
+	    adminSalesMenu();
 		break;
 	    case "7":
 		admin_transactionsMenu();
@@ -1020,5 +1020,641 @@ public class Main {
 	    }
 
 	}
+    }
+    
+    /******admin rental view**********/
+    public static void adminRentalMenu(){
+    	while(true){
+    		System.out.println("ADMIN Rentals Menu");
+    	    System.out.println("Enter a key value to proceed:");
+    	    System.out.println("[1] List all Rentals");
+    	    System.out.println("[2] Search rentals by email");
+    	    //System.out.println("[3] Search rentals by date");
+    	    System.out.println("[3] Search rentals by gid");
+    	    System.out.println("[4] List all overdue rentals with names");
+    	    System.out.println("[5] Cancel");
+    	    
+    	    String choice = scanner.nextLine();
+    	    System.out.println(wipe);
+    	    
+    	    switch(choice.toLowerCase()){
+    	    case "1":
+    	    	ArrayList<String> rentalsList = displaySqlProc.viewRentals();
+    			printItemList(rentalsList);
+    			break;
+    	    case "2":
+    	    	searchRentalsByEmailMenu();
+    	    	break;
+    	    case "3":
+    	    	searchRentalsByGidMenu();
+    	    	break;
+    	    case "4":
+    	    	ArrayList<String> rentalsList2 = displaySqlProc.viewOverdueRentals();
+    			printItemList(rentalsList2);
+    			break;
+    	    case "q":
+    			return;
+    		    default:
+    			System.out.println("Invalid input, try again.");
+    		    }
+    	    }
+    	}
+
+    public static void searchRentalsByEmailMenu(){
+    	System.out.println("Enter the renter's email to continue or type !q to go back:");
+    	String input = scanner.nextLine();
+    	System.out.println(wipe);
+    	
+    	switch(input.toLowerCase()){
+    	case "!q":
+    		return;
+    		default:
+    			ArrayList<String> rentalsList = displaySqlProc.searchRentalsString("email", input);
+        		printItemList(rentalsList);
+    	}
+    }
+
+    
+   public static void searchRentalsByGidMenu(){
+    	System.out.println("Enter the rental's game id or type !q to go back:");
+    	String input = scanner.nextLine();
+    	int gidInt = Integer.parseInt(input);
+    	System.out.println(wipe);
+    	
+    	switch(input.toLowerCase()){
+    	case "!q":
+    		return;
+    		default:
+    			ArrayList<String> rentalsList = displaySqlProc.searchRentalsByGid("gid", gidInt);
+        		printItemList(rentalsList);
+    	}
+    }
+/******admin sales view********/
+public static void adminSalesMenu(){
+    	while(true){
+    		System.out.println("ADMIN Rentals Menu");
+    	    System.out.println("Enter a key value to proceed:");
+    	    System.out.println("[1] List all games on sale by title");
+    	    System.out.println("[2] Add a game on sale");
+    	    System.out.println("[3] Update game on sale");
+    	    System.out.println("[4] Remove game on sale");
+    	    System.out.println("[5] Cancel");
+    	    
+    	    String choice = scanner.nextLine();
+    	    System.out.println(wipe);
+    	    
+    	    switch(choice.toLowerCase()){
+    	    case "1":
+    	    	ArrayList<String> gameList = displaySqlProc.viewGamesOnSaleByTitle();
+    			printItemList(gameList);
+    			break;
+    	    case "2":
+    	    	ArrayList<String> list = displaySqlProc.viewGamesOnSaleByTitle();
+    			printItemList(list);
+    			admin_addNewSale();
+    	    	break;
+    	    case "3":
+    	    	ArrayList<String> list2 = displaySqlProc.viewGamesOnSaleByTitle();
+    			printItemList(list2);
+    	    	admin_updateSaleMenu();
+    	    	break;
+    	    case "4":
+    	    	ArrayList<String> rentalsList = displaySqlProc.viewGamesOnSaleByTitle();
+    			printItemList(rentalsList);
+    			admin_removeSale();
+    			break;
+    	    case "q":
+    			return;
+    		    default:
+    			System.out.println("Invalid input, try again.");
+    		    }
+    	    }
+    	}
+
+
+public static void admin_addNewSale() {
+    	while (true) {
+    	    System.out.print("Adding a new sale.");
+    	    System.out.print("\r\nGame's GID: ");
+    	    String gid = scanner.nextLine();
+    	    System.out.print("\r\nDiscount: ");
+    	    String discount = scanner.nextLine();
+    	    System.out.println(wipe);
+    	    
+    	    int gidInt = Integer.parseInt(gid);
+    	    double discountDub = Double.parseDouble(discount);
+    	    String response = sqlProc.admin_addNewSale(gidInt, discountDub);
+    	    
+    	    System.out.println(response);
+    	}
+}
+
+
+public static void admin_removeSale(){
+    	while(true){
+    		System.out.print("Removing a sale.");
+    	    System.out.print("\r\nGame's GID: ");
+    	    String gid = scanner.nextLine();
+    	    System.out.println(wipe);
+    	    
+    	    int gidInt = Integer.parseInt(gid);
+    	    String response = sqlProc.admin_removeSale(gidInt);
+    	    
+    	    System.out.println(response);
+    	}
+    }
+
+public static void admin_updateSaleMenu(){
+    	while(true){
+    		System.out.println("Update Sales Menu");
+    	    System.out.print("\r\nGame's GID: ");
+    	    String gid = scanner.nextLine();
+    		
+    		System.out.println("Enter a key value to proceed:");
+    	    System.out.println("Choose an attribute to update");
+    	    System.out.println("[1]gid, [2]discount, [3]originalPrice, [Q]Go back");
+    	    String choice = scanner.nextLine();
+    	    System.out.println(wipe);
+    	    
+    	    switch(choice.toLowerCase()){
+    	    case "1":
+    	    	admin_updateSaleGid(gid);
+    	    	break;
+    	    case "2":
+    	    	admin_updateSaleDiscount(gid);
+    	    	break;
+    	    case "3":
+    	    	admin_updateSaleOriginalPrice(gid);
+    	    	break;
+    	    case "q":
+    	    	return;
+    	    	default:
+    	    		System.out.println("Invalid input, try again.");
+    	    }
+    	}
+    }
+    
+    public static void admin_updateSaleGid(String gid){
+    	while(true){
+    		System.out.println("Enter the game's new gid or type !q to go back:");
+    	    String input = scanner.nextLine();
+    	    int newGid = Integer.parseInt(input);
+    	    System.out.println(wipe);
+    	    
+    	    switch(input.toLowerCase()){
+    	    case "!q":
+    	    	return;
+    	    default:
+    	    	int gidInt = Integer.parseInt(gid);
+    	    	String response = sqlProc.admin_updateSaleGid(gidInt, newGid);
+    	    	System.out.println(response);
+    	    }
+    	}
+    }
+    
+    public static void admin_updateSaleDiscount(String gid){
+    	while(true){
+    		System.out.println("Enter the game's new discount or type !q to go back:");
+    	    String input = scanner.nextLine();
+    	    double newDiscount = Double.parseDouble(input);
+    	    System.out.println(wipe);
+    	    
+    	    switch(input.toLowerCase()){
+    	    case "!q":
+    	    	return;
+    	    default:
+    	    	int gidInt = Integer.parseInt(gid);
+    	    	String response = sqlProc.admin_updateSaleDiscount(gidInt, newDiscount);
+    	    	System.out.println(response);
+    	    }
+    	}
+    }
+    
+    public static void admin_updateSaleOriginalPrice(String gid){
+    	while(true){
+    		System.out.println("Enter the game's new originalPrice or type !q to go back:");
+    	    String input = scanner.nextLine();
+    	    double newOriginalPrice = Double.parseDouble(input);
+    	    System.out.println(wipe);
+    	    
+    	    switch(input.toLowerCase()){
+    	    case "!q":
+    	    	return;
+    	    default:
+    	    	int gidInt = Integer.parseInt(gid);
+    	    	String response = sqlProc.admin_updateSaleOriginalPrice(gidInt, newOriginalPrice);
+    	    	System.out.println(response);
+    	    }
+    	}
+    }
+    
+    /*******modify inventory******/
+    public static void modifyInventoryMenu(){
+    	while(true){
+    		System.out.println("Modify Inventory Menu");
+    		System.out.println("Enter a key value to proceed:");
+    		System.out.println("[1] Modify game listing, [2] Modify console listing, [Q] Go back");
+    		String choice = scanner.nextLine();
+    	    System.out.println(wipe);
+    	    
+    	    switch(choice.toLowerCase()){
+    	    case "1":
+    	    	modifyGameListing();
+    	    	break;
+    	    case "2":
+    	    	modifyConsoleListing();
+    	    	break;
+    	    case "q":
+    	    	return;
+    	    	default:
+    	    		System.out.println("Invalid input, try again.");
+    	    }
+    	}
+    }
+    
+    public static void modifyGameListing(){
+    	while(true){
+    		System.out.println("Modify Game Menu");
+    		System.out.println("Enter a key value to proceed:");
+    		System.out.println("[1] Insert a new game, [2] Update existing game, [3] Delete existing game, [Q] Go  back");
+    		String choice = scanner.nextLine();
+    	    System.out.println(wipe);
+    	    
+    	    switch(choice.toLowerCase()){
+    	    case "1":
+    	    	inventoryInsertGame();
+    	    	break;
+    	    case "2":
+    	    	ArrayList<String> gameList = new ArrayList<String>();
+    	    	gameList = displaySqlProc.viewGames("title");
+    			printItemList(gameList);
+    	    	inventoryUpdateGame();
+    	    	break;
+    	    case "3":
+    	    	ArrayList<String> gameList2 = new ArrayList<String>();
+    	    	gameList2 = displaySqlProc.viewGames("title");
+    			printItemList(gameList2);
+    	    	inventoryDeleteGame();
+    	    	break;
+    	    case "q":
+    	    	return;
+    	    	default:
+    	    		System.out.println("Invalid input, try again.");
+    	    }
+    	}
+    }
+    
+    public static void inventoryInsertGame(){
+ 	    System.out.println("Enter the new game's title: ");
+ 	    String title = scanner.nextLine();
+ 	    System.out.println("Enter the new game's author: ");
+	    String author = scanner.nextLine();
+	    System.out.println("Enter the new game's genre: ");
+	    String genre = scanner.nextLine();
+	    System.out.println("Enter the new game's console type: ");
+ 	    String console_type = scanner.nextLine();
+ 	    System.out.println("Enter the new game's rating: ");
+ 	    String rating = scanner.nextLine();
+ 	    System.out.println("Enter the new game's price: ");
+	    String price = scanner.nextLine();
+	    System.out.println("Enter the new game's stock: ");
+	    String stock = scanner.nextLine();
+ 	    System.out.println(wipe);
+ 	    
+ 	    int ratingInt = Integer.parseInt(rating);
+ 	    double priceDub = Double.parseDouble(price);
+ 	    int stockInt = Integer.parseInt(stock);
+
+	    double response = sqlProc.inventoryInsertGame(title, author, genre, console_type, ratingInt, priceDub, stockInt);
+	    
+	    if(response > -1000){
+	    	System.out.println("You've successfully added " + title + " to the game listings.");
+	    	return;
+	    } else {
+	    	System.out.println("Oops, something went wrong.");
+	    	return;
+	    }
+    }
+    
+    public static void inventoryDeleteGame(){
+    	System.out.println("Enter the game's gid you wish to remove: ");
+ 	    String gid = scanner.nextLine();
+ 	    System.out.println("Enter that game's title: ");
+ 	    String title = scanner.nextLine();
+ 	    System.out.println(wipe);
+ 	    
+ 	    int gidInt = Integer.parseInt(gid);
+	    String response = sqlProc.inventoryDeleteGame(gidInt, title);
+	    System.out.println(response);
+    }
+    
+    public static void inventoryUpdateGame(){
+    	while(true){
+    		System.out.println("Update Games Menu");
+    	    System.out.println("Game's GID: ");
+    	    String gid = scanner.nextLine();
+    		
+    		System.out.println("Enter a key value to proceed:");
+    	    System.out.println("Choose an attribute to update");
+    	    System.out.println("[1] Title, [2] Author, [3] Genre, [4] Console type");
+    	    System.out.println("[5] Rating, [6] Price, [7] Stock");
+    	    System.out.println("[Q] Go back");
+    	    String choice = scanner.nextLine();
+    	    System.out.println(wipe);
+    	    
+    	    switch(choice.toLowerCase()){
+    	    case "1":
+    	    	updateGameTitle(gid);
+    	    	break;
+    	    case "2":
+    	    	updateGameAuthor(gid);
+    	    	break;
+    	    case "3":
+    	    	updateGameGenre(gid);
+    	    	break;
+    	    case "4":
+    	    	updateGameConsoleType(gid);
+    	    	break;
+    	    case "5":
+    	    	updateGameRating(gid);
+    	    	break;
+    	    case "6":
+    	    	updateGamePrice(gid);
+    	    	break;
+    	    case "7":
+    	    	updateGameStock(gid);
+    	    	break;
+    	    case "q":
+    	    	return;
+    	    	default:
+    	    		System.out.println("Invalid input, try again.");
+    	    }
+    	}
+    }
+    
+    public static void modifyConsoleListing(){
+    	while(true){
+    		System.out.println("Modify Console Menu");
+    		System.out.println("Enter a key value to proceed:");
+    		System.out.println("[1] Insert a new console, [2] Update existing console, [3] Delete existing console, [Q] Go  back");
+    		String choice = scanner.nextLine();
+    	    System.out.println(wipe);
+    	    
+    	    switch(choice.toLowerCase()){
+    	    case "1":
+    	    	inventoryInsertConsole();
+    	    	break;
+    	    case "2":
+    	    	inventoryUpdateConsole();
+    	    	break;
+    	    case "3":
+    	    	inventoryDeleteConsole();
+    	    	break;
+    	    case "q":
+    	    	return;
+    	    	default:
+    	    		System.out.println("Invalid input, try again.");
+    	    }
+    	}
+    }
+    
+    public static void inventoryInsertConsole(){
+    	System.out.println("Enter the new console's CID: ");
+ 	    String cid = scanner.nextLine();
+ 	    System.out.println("Enter the new console's name: ");
+ 	    String name = scanner.nextLine();
+ 	    System.out.println("Enter the new console's price: ");
+	    String price = scanner.nextLine();
+	    System.out.println("Enter the new console's stock: ");
+	    String stock = scanner.nextLine();
+ 	    System.out.println(wipe);
+ 	    
+ 	    int cidInt = Integer.parseInt(cid);
+ 	    double priceDub = Double.parseDouble(price);
+ 	    int stockInt = Integer.parseInt(stock);
+
+	    double response = sqlProc.inventoryInsertConsole(name, priceDub, stockInt);
+	    
+	    if(response > -1000.0){
+	    	System.out.println("You've successfully added " + name + " to the console listings.");
+	    	return;
+	    } else {
+	    	System.out.println("Oops, something went wrong.");
+	    	return;
+	    }
+    }
+    
+    public static void inventoryDeleteConsole(){
+ 	    System.out.println("Enter the console's name you wish to remove: ");
+ 	    String name = scanner.nextLine();
+ 	    System.out.println(wipe);
+
+	    String response = sqlProc.inventoryDeleteConsole(name);
+	    System.out.println(response);
+    }
+    
+    public static void inventoryUpdateConsole(){
+    	while(true){
+    		System.out.println("Update Consoles Menu");
+    	    System.out.println("Console's name: ");
+    	    String name = scanner.nextLine();
+    		
+    		System.out.println("Enter a key value to proceed:");
+    	    System.out.println("Choose an attribute to update");
+    	    System.out.println("[1] Name, [2] Price, [3] Stock");
+    	    System.out.println("[Q] Go back");
+    	    String choice = scanner.nextLine();
+    	    System.out.println(wipe);
+    	    
+    	    switch(choice.toLowerCase()){
+    	    case "1":
+    	    	updateConsoleName(name);
+    	    	break;
+    	    case "2":
+    	    	updateConsolePrice(name);
+    	    	break;
+    	    case "3":
+    	    	updateConsoleStock(name);
+    	    	break;
+    	    case "q":
+    	    	return;
+    	    	default:
+    	    		System.out.println("Invalid input, try again.");
+    	    }
+    	}
+    }
+    
+    
+    public static void updateGameTitle(String gid){
+    	while(true){
+    		System.out.println("Type the game's new title or type !q to go back:");
+    	    String input = scanner.nextLine();
+    	    System.out.println(wipe);
+    	    
+    	    switch(input.toLowerCase()){
+    	    case "!q":
+    	    	return;
+    	    default:
+    	    	int gidInt = Integer.parseInt(gid);
+    	    	String response = sqlProc.updateGameTitle(gidInt, input);
+    	    	System.out.println(response);
+    	    }
+    	}
+    }
+    
+    public static void updateGameAuthor(String gid){
+    	while(true){
+    		System.out.println("Type the game's new author or type !q to go back:");
+    	    String input = scanner.nextLine();
+    	    System.out.println(wipe);
+    	    
+    	    switch(input.toLowerCase()){
+    	    case "!q":
+    	    	return;
+    	    default:
+    	    	int gidInt = Integer.parseInt(gid);
+    	    	String response = sqlProc.updateGameAuthor(gidInt, input);
+    	    	System.out.println(response);
+    	    }
+    	}
+    }
+    
+    public static void updateGameGenre(String gid){
+    	while(true){
+    		System.out.println("Type the game's new genre or type !q to go back:");
+    	    String input = scanner.nextLine();
+    	    System.out.println(wipe);
+    	    
+    	    switch(input.toLowerCase()){
+    	    case "!q":
+    	    	return;
+    	    default:
+    	    	int gidInt = Integer.parseInt(gid);
+    	    	String response = sqlProc.updateGameGenre(gidInt, input);
+    	    	System.out.println(response);
+    	    }
+    	}
+    }
+    
+    public static void updateGameConsoleType(String gid){
+    	while(true){
+    		System.out.println("Type the game's new console type or type !q to go back:");
+    	    String input = scanner.nextLine();
+    	    System.out.println(wipe);
+    	    
+    	    switch(input.toLowerCase()){
+    	    case "!q":
+    	    	return;
+    	    default:
+    	    	int gidInt = Integer.parseInt(gid);
+    	    	String response = sqlProc.updateGameConsoleType(gidInt, input);
+    	    	System.out.println(response);
+    	    }
+    	}
+    }
+    
+    public static void updateGameRating(String gid){
+    	while(true){
+    		System.out.println("Type the game's new rating or type !q to go back:");
+    	    String input = scanner.nextLine();
+    	    int newRating = Integer.parseInt(input);
+    	    System.out.println(wipe);
+    	    
+    	    switch(input.toLowerCase()){
+    	    case "!q":
+    	    	return;
+    	    default:
+    	    	int gidInt = Integer.parseInt(gid);
+    	    	String response = sqlProc.updateGameRating(gidInt, newRating);
+    	    	System.out.println(response);
+    	    }
+    	}
+    }
+    
+    public static void updateGamePrice(String gid){
+    	while(true){
+    		System.out.println("Type the game's new price or type !q to go back:");
+    	    String input = scanner.nextLine();
+    	    double newPrice = Double.parseDouble(input);
+    	    System.out.println(wipe);
+    	    
+    	    switch(input.toLowerCase()){
+    	    case "!q":
+    	    	return;
+    	    default:
+    	    	int gidInt = Integer.parseInt(gid);
+    	    	String response = sqlProc.updateGamePrice(gidInt, newPrice);
+    	    	System.out.println(response);
+    	    }
+    	}
+    }
+    
+    public static void updateGameStock(String gid){
+    	while(true){
+    		System.out.println("Type the game's new stock or type !q to go back:");
+    	    String input = scanner.nextLine();
+    	    int newStock = Integer.parseInt(input);
+    	    System.out.println(wipe);
+    	    
+    	    switch(input.toLowerCase()){
+    	    case "!q":
+    	    	return;
+    	    default:
+    	    	int gidInt = Integer.parseInt(gid);
+    	    	String response = sqlProc.updateGameStock(gidInt, newStock);
+    	    	System.out.println(response);
+    	    }
+    	}
+    }
+    
+    
+    public static void updateConsoleName(String name){
+    	while(true){
+    		System.out.println("Type the console's new name or type !q to go back:");
+    	    String input = scanner.nextLine();
+    	    System.out.println(wipe);
+    	    
+    	    switch(input.toLowerCase()){
+    	    case "!q":
+    	    	return;
+    	    default:
+    	    	String response = sqlProc.updateConsoleName(name, input);
+    	    	System.out.println(response);
+    	    }
+    	}
+    }
+    
+    public static void updateConsolePrice(String name){
+    	while(true){
+    		System.out.println("Type the console's new price or type !q to go back:");
+    	    String input = scanner.nextLine();
+    	    double newPrice = Double.parseDouble(input);
+    	    System.out.println(wipe);
+    	    
+    	    switch(input.toLowerCase()){
+    	    case "!q":
+    	    	return;
+    	    default:
+    	    	String response = sqlProc.updateConsolePrice(name, newPrice);
+    	    	System.out.println(response);
+    	    }
+    	}
+    }
+    
+    public static void updateConsoleStock(String name){
+    	while(true){
+    		System.out.println("Type the console's new stock or type !q to go back:");
+    	    String input = scanner.nextLine();
+    	    int newStock = Integer.parseInt(input);
+    	    System.out.println(wipe);
+    	    
+    	    switch(input.toLowerCase()){
+    	    case "!q":
+    	    	return;
+    	    default:
+    	    	String response = sqlProc.updateConsoleStock(name, newStock);
+    	    	System.out.println(response);
+    	    }
+    	}
     }
 }
