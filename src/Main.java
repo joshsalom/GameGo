@@ -1330,7 +1330,7 @@ public static void admin_updateSaleMenu(){
 
 	    double response = sqlProc.inventoryInsertGame(title, author, genre, console_type, ratingInt, priceDub, stockInt);
 	    
-	    if(response > -1000){
+	    if(response > -1){
 	    	System.out.println("You've successfully added " + title + " to the game listings.");
 	    	return;
 	    } else {
@@ -1435,7 +1435,7 @@ public static void admin_updateSaleMenu(){
 
 	    double response = sqlProc.inventoryInsertConsole(name, priceDub, stockInt);
 	    
-	    if(response > -1000.0){
+	    if(response > -1){
 	    	System.out.println("You've successfully added " + name + " to the console listings.");
 	    	return;
 	    } else {

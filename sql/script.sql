@@ -32,14 +32,16 @@ CREATE TABLE Games
 	console_type varchar(50) NOT NULL,
 	rating INT NOT NULL,
 	price DOUBLE(6, 2) NOT NULL,
-	stock INT NOT NULL
+	stock INT NOT NULL,
+	UNIQUE KEY gameKey (title, author, console_type)
 );
 DROP TABLE IF EXISTS Consoles;
 CREATE TABLE Consoles
 (	cid INT PRIMARY KEY AUTO_INCREMENT,
 	name VARCHAR(50) NOT NULL,
 	price DOUBLE(6, 2) NOT NULL,
-	stock INT NOT NULL
+	stock INT NOT NULL,
+	UNIQUE KEY consoleKey (name)
 );
 DROP TABLE IF EXISTS Memberships;
 CREATE TABLE Memberships
@@ -61,24 +63,6 @@ CREATE TABLE Rentals
 	date_due TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	FOREIGN KEY (gid) 
 	REFERENCES games (gid)
-	ON DELETE CASCADE
-);
-DROP TABLE IF EXISTS Preorders;
-CREATE TABLE Preorders
-(
-	pID INT PRIMARY KEY AUTO_INCREMENT,
-	mid INT,
-	gid INT,
-	cid INT,
-	date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	FOREIGN KEY (mid) 
-	REFERENCES memberships (mid)
-	ON DELETE CASCADE,
-	FOREIGN KEY (gid)
-	REFERENCES games (gid)
-	ON DELETE CASCADE,
-	FOREIGN KEY (cid)
-	REFERENCES consoles (cid)
 	ON DELETE CASCADE
 );
 DROP TABLE IF EXISTS Transactions;

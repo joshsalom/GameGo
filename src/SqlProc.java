@@ -334,7 +334,7 @@ public class SqlProc {
         		
         		ResultSet rs = cs.executeQuery();
         		rs.next();
-        		return rs.getDouble("price");
+        		return 1;
         	} catch(Exception e) {
         		//e.printStackTrace();
         		return -1.0;

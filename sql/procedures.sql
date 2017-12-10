@@ -689,8 +689,6 @@ IN newConsoleType varchar(50), IN newRating INT, IN newPrice DOUBLE(6, 2), IN ne
 BEGIN
 insert into games
 values (null, newTitle, newAuthor, newGenre, newConsoleType, 0, newPrice, newStock);
-select title, price from games
-where games.title = newTitle and games.price = newPrice;
 END //
 DELIMITER ;
 
