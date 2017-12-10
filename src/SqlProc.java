@@ -280,7 +280,7 @@ public class SqlProc {
         		cs.setInt(2, newGid);
         		
         		ResultSet rs = cs.executeQuery();
-        		rs.next();
+        		//rs.next();
         		return "You've updated this sale's gid";
         	} catch(Exception e) {
         		e.printStackTrace();
@@ -295,7 +295,7 @@ public class SqlProc {
         		cs.setDouble(2, newDiscount);
         		
         		ResultSet rs = cs.executeQuery();
-        		rs.next();
+        		//rs.next();
         		return "You updated this sale's discount";
         	} catch(Exception e) {
         		e.printStackTrace();
@@ -310,7 +310,7 @@ public class SqlProc {
         		cs.setDouble(2, newOriginalPrice);
         		
         		ResultSet rs = cs.executeQuery();
-        		rs.next();
+        		//rs.next();
         		return "You updated this sale's original price";
         	} catch(Exception e) {
         		e.printStackTrace();
@@ -348,7 +348,7 @@ public class SqlProc {
         		cs.setString(2, title);
         		
         		ResultSet rs = cs.executeQuery();
-        		rs.next();
+        		//rs.next();
         		return "You've deleted " + title + " from the game listings.";
         	} catch(Exception e) {
         		e.printStackTrace();
@@ -378,7 +378,7 @@ public class SqlProc {
         		cs.setString(1, name);
         		
         		ResultSet rs = cs.executeQuery();
-        		rs.next();
+        		//rs.next();
         		return "You've deleted " + name + " from the console list.";
         	} catch(Exception e) {
         		e.printStackTrace();
@@ -408,7 +408,7 @@ public class SqlProc {
         		cs.setString(2, newTitle);
         		
         		ResultSet rs = cs.executeQuery();
-        		rs.next();
+        		//rs.next();
         		return "You updated this game's title";
         	} catch(Exception e) {
         		e.printStackTrace();
@@ -423,7 +423,7 @@ public class SqlProc {
         		cs.setString(2, newAuthor);
         		
         		ResultSet rs = cs.executeQuery();
-        		rs.next();
+        		//rs.next();
         		return "You updated this game's author";
         	} catch(Exception e) {
         		e.printStackTrace();
@@ -438,7 +438,7 @@ public class SqlProc {
         		cs.setString(2, newGenre);
         		
         		ResultSet rs = cs.executeQuery();
-        		rs.next();
+        		//rs.next();
         		return "You updated this game's genre";
         	} catch(Exception e) {
         		e.printStackTrace();
@@ -448,12 +448,12 @@ public class SqlProc {
         
         public String updateGameConsoleType(int gidInt, String newConsoleType){
         	try{
-        		CallableStatement cs = conn.prepareCall("{CALL updateConsoleType(?, ?)}");
+        		CallableStatement cs = conn.prepareCall("{CALL updateGameConsoleType(?, ?)}");
         		cs.setInt(1, gidInt);
         		cs.setString(2, newConsoleType);
         		
         		ResultSet rs = cs.executeQuery();
-        		rs.next();
+        		//rs.next();
         		return "You updated this game's console type";
         	} catch(Exception e) {
         		e.printStackTrace();
@@ -468,7 +468,7 @@ public class SqlProc {
         		cs.setInt(2, newRating);
         		
         		ResultSet rs = cs.executeQuery();
-        		rs.next();
+        		//rs.next();
         		return "You updated this game's rating";
         	} catch(Exception e) {
         		e.printStackTrace();
@@ -483,7 +483,7 @@ public class SqlProc {
         		cs.setDouble(2, newPrice);
         		
         		ResultSet rs = cs.executeQuery();
-        		rs.next();
+        		//rs.next();
         		return "You updated this game's price";
         	} catch(Exception e) {
         		e.printStackTrace();
@@ -498,7 +498,7 @@ public class SqlProc {
         		cs.setInt(2, newStock);
         		
         		ResultSet rs = cs.executeQuery();
-        		rs.next();
+        		//rs.next();
         		return "You updated this game's stock";
         	} catch(Exception e) {
         		e.printStackTrace();
@@ -514,7 +514,7 @@ public class SqlProc {
         		cs.setString(2, newName);
         		
         		ResultSet rs = cs.executeQuery();
-        		rs.next();
+        		//rs.next();
         		return "You updated this console's name";
         	} catch(Exception e) {
         		e.printStackTrace();
@@ -529,7 +529,7 @@ public class SqlProc {
         		cs.setDouble(2, newPrice);
         		
         		ResultSet rs = cs.executeQuery();
-        		rs.next();
+        		//rs.next();
         		return "You updated this console's price";
         	} catch(Exception e) {
         		e.printStackTrace();
@@ -544,7 +544,7 @@ public class SqlProc {
         		cs.setInt(2, newStock);
         		
         		ResultSet rs = cs.executeQuery();
-        		rs.next();
+        		//rs.next();
         		return "You updated this console's stock";
         	} catch(Exception e) {
         		e.printStackTrace();

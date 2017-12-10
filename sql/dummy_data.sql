@@ -26,11 +26,11 @@ VALUES (2, "Super Smash Bros", "Nintendo", "Fighting", "Wii U", 5, 50.00, 10);
 
 INSERT
 INTO games
-VALUES (3, "Bioshock", "2K Games", "First Person Shooter", "XBox", 3, 40.00, 7);
+VALUES (3, "Bioshock", "2K Games", "FPS", "XBox", 3, 40.00, 7);
 
 INSERT
 INTO games
-VALUES (4, "Bioshock", "2K Games", "First Person Shooter", "PS3", 4, 45.00, 7);
+VALUES (4, "Bioshock", "2K Games", "FPS", "PS3", 4, 45.00, 7);
 
 INSERT
 INTO games
@@ -97,6 +97,8 @@ CALL buyGame(3, 8);
 
 CALL rentGame(2, 7);
 CALL rentGame(1, 5);
+
+UPDATE rentals set date_rented="2017-12-01 17:17:55", date_due="2017-12-05 17:17:55" where gid = 5;
 
 INSERT INTO prizes(prize_name, prize_points)
 value("Mario Hat", 100);

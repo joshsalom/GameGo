@@ -770,8 +770,8 @@ public class DisplaySqlProc {
     			String dateDue = rs.getString("date_due");
     			
     			String ridFormat = String.format("|%-5d|", rid);
-    			String midFormat = String.format("|%-5d|", mid);
-    			String gidFormat = String.format("|%-5d|", gid);
+    			String midFormat = String.format("%-5d|", mid);
+    			String gidFormat = String.format("%-5d|", gid);
     			String priceFormat = String.format("$%10.2f|", price);
     			String dRFormat = String.format("%-20s|", dateRented);
     			String dDFormat = String.format("%-20s|", dateDue);
@@ -803,21 +803,23 @@ public class DisplaySqlProc {
     		while(rs.next()){
     			int rid = rs.getInt("rid");
     			int mid = rs.getInt("mid");
+    			String email = rs.getString("email");
     			int gid = rs.getInt("gid");
     			double price = rs.getDouble("price");
     			String dateRented = rs.getString("date_rented");
     			String dateDue = rs.getString("date_due");
     			
     			String ridFormat = String.format("|%-5d|", rid);
-    			String midFormat = String.format("|%-5d|", mid);
-    			String gidFormat = String.format("|%-5d|", gid);
+    			String midFormat = String.format("%-5d|", mid);
+    			String emailFormat = String.format("%-15s|", email);
+    			String gidFormat = String.format("%-5d|", gid);
     			String priceFormat = String.format("$%10.2f|", price);
     			String dRFormat = String.format("%-20s|", dateRented);
     			String dDFormat = String.format("%-20s|", dateDue);
     			//String dRFormat = new SimpleDateFormat("MM.dd.yyyy HH.mm.ss").format(dateRented);
     			//String dDFormat = new SimpleDateFormat("MM.dd.yyyy HH.mm.ss").format(dateDue);
     			
-    			rentalsList.add(ridFormat + midFormat + gidFormat + priceFormat + dRFormat + dDFormat);
+    			rentalsList.add(ridFormat + midFormat + emailFormat + gidFormat + priceFormat + dRFormat + dDFormat);
     		}
     		hasResults = cs.getMoreResults();
     	    }
@@ -848,8 +850,8 @@ public class DisplaySqlProc {
     			String dateDue = rs.getString("date_due");
     			
     			String ridFormat = String.format("|%-5d|", rid);
-    			String midFormat = String.format("|%-5d|", mid);
-    			String gidFormat = String.format("|%-5d|", gid);
+    			String midFormat = String.format("%-5d|", mid);
+    			String gidFormat = String.format("%-5d|", gid);
     			String priceFormat = String.format("$%10.2f|", price);
     			String dRFormat = String.format("%-20s|", dateRented);
     			String dDFormat = String.format("%-20s|", dateDue);
@@ -879,17 +881,19 @@ public class DisplaySqlProc {
     		while(rs.next()){
     			int rid = rs.getInt("rid");
     			int mid = rs.getInt("mid");
+    			String email = rs.getString("email");
     			int gid = rs.getInt("gid");
     			String dateDue = rs.getString("date_due");
     			String name = rs.getString("name");
     			
     			String ridFormat = String.format("|%-5d|", rid);
-    			String midFormat = String.format("|%-5d|", mid);
-    			String gidFormat = String.format("|%-5d|", gid);
+    			String midFormat = String.format("%-5d|", mid);
+    			String emailFormat = String.format("%-20s|", email);
+    			String gidFormat = String.format("%-5d|", gid);
     			String dDFormat = String.format("%-20s|", dateDue);
-    			String nameFormat = String.format("|%-20s|", name);
+    			String nameFormat = String.format("%-20s|", name);
     			
-    			rentalsList.add(ridFormat + midFormat + gidFormat + dDFormat + nameFormat);
+    			rentalsList.add(ridFormat + midFormat + nameFormat + emailFormat + gidFormat + dDFormat);
     		}
     		hasResults = cs.getMoreResults();
     	}

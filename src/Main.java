@@ -207,6 +207,7 @@ public class Main {
 		membershipPrizeMenu();
 		break;
 	    case "3":
+		System.out.println(currentMemberId);
 		printItemList(displaySqlProc.viewMemberRentals(currentMemberId));
 		break;
 	    case "4":
@@ -255,7 +256,7 @@ public class Main {
     }
     
     public static void membershipPrizeMenu() {
-	while (currentMemberId != 1) {
+	while (currentMemberId != -1) {
 	    printItemList(displaySqlProc.viewPrizes());
 	    
 	    System.out.println("Membership Exclusive Prizes");
@@ -407,7 +408,7 @@ public class Main {
 			    break;
 			} else {
 		   	    int gidInt = Integer.parseInt(gidRentString);
-		   	    String result = sqlProc.rentGame(currentUserId, gidInt);
+		   	    String result = sqlProc.rentGame(currentMemberId, gidInt);
 		   	    System.out.println(result);
 			}
 		    }
@@ -502,7 +503,7 @@ public class Main {
 			    break;
 			} else {
 		   	    int gidInt = Integer.parseInt(gidRentString);
-		   	    String result = sqlProc.rentGame(currentUserId, gidInt);
+		   	    String result = sqlProc.rentGame(currentMemberId, gidInt);
 		   	    System.out.println(result);
 			}
 		    }
@@ -837,7 +838,6 @@ public class Main {
 		    break;
 		else{
 		    printItemList(displaySqlProc.searchAllTransactionsBy("TID", Integer.parseInt(choice)));
-		    System.out.println(wipe);
 		}
 		break;
 	    case "8":
@@ -847,7 +847,6 @@ public class Main {
 		    break;
 		else{
 		    printItemList(displaySqlProc.searchAllTransactionsBy("UID", Integer.parseInt(choice)));
-		    System.out.println(wipe);
 		}
 		break;
 	    case "9":
@@ -857,7 +856,6 @@ public class Main {
 		    break;
 		else{
 		    printItemList(displaySqlProc.searchAllTransactionsBy("GID", Integer.parseInt(choice)));
-		    System.out.println(wipe);
 		}
 		break;
 	    case "10":
@@ -1032,7 +1030,7 @@ public class Main {
     	    //System.out.println("[3] Search rentals by date");
     	    System.out.println("[3] Search rentals by gid");
     	    System.out.println("[4] List all overdue rentals with names");
-    	    System.out.println("[5] Cancel");
+    	    System.out.println("[Q] Cancel");
     	    
     	    String choice = scanner.nextLine();
     	    System.out.println(wipe);
@@ -1098,7 +1096,7 @@ public static void adminSalesMenu(){
     	    System.out.println("[2] Add a game on sale");
     	    System.out.println("[3] Update game on sale");
     	    System.out.println("[4] Remove game on sale");
-    	    System.out.println("[5] Cancel");
+    	    System.out.println("[Q] Cancel");
     	    
     	    String choice = scanner.nextLine();
     	    System.out.println(wipe);
@@ -1146,6 +1144,7 @@ public static void admin_addNewSale() {
     	    String response = sqlProc.admin_addNewSale(gidInt, discountDub);
     	    
     	    System.out.println(response);
+    	    return;
     	}
 }
 
@@ -1161,6 +1160,7 @@ public static void admin_removeSale(){
     	    String response = sqlProc.admin_removeSale(gidInt);
     	    
     	    System.out.println(response);
+    	    return;
     	}
     }
 
@@ -1179,13 +1179,13 @@ public static void admin_updateSaleMenu(){
     	    switch(choice.toLowerCase()){
     	    case "1":
     	    	admin_updateSaleGid(gid);
-    	    	break;
+    	    	return;
     	    case "2":
     	    	admin_updateSaleDiscount(gid);
-    	    	break;
+    	    	return;
     	    case "3":
     	    	admin_updateSaleOriginalPrice(gid);
-    	    	break;
+    	    	return;
     	    case "q":
     	    	return;
     	    	default:
@@ -1208,6 +1208,7 @@ public static void admin_updateSaleMenu(){
     	    	int gidInt = Integer.parseInt(gid);
     	    	String response = sqlProc.admin_updateSaleGid(gidInt, newGid);
     	    	System.out.println(response);
+    	    	return;
     	    }
     	}
     }
@@ -1226,6 +1227,7 @@ public static void admin_updateSaleMenu(){
     	    	int gidInt = Integer.parseInt(gid);
     	    	String response = sqlProc.admin_updateSaleDiscount(gidInt, newDiscount);
     	    	System.out.println(response);
+    	    	return;
     	    }
     	}
     }
@@ -1244,6 +1246,7 @@ public static void admin_updateSaleMenu(){
     	    	int gidInt = Integer.parseInt(gid);
     	    	String response = sqlProc.admin_updateSaleOriginalPrice(gidInt, newOriginalPrice);
     	    	System.out.println(response);
+    	    	return;
     	    }
     	}
     }
@@ -1365,25 +1368,25 @@ public static void admin_updateSaleMenu(){
     	    switch(choice.toLowerCase()){
     	    case "1":
     	    	updateGameTitle(gid);
-    	    	break;
+    	    	return;
     	    case "2":
     	    	updateGameAuthor(gid);
-    	    	break;
+    	    	return;
     	    case "3":
     	    	updateGameGenre(gid);
-    	    	break;
+    	    	return;
     	    case "4":
     	    	updateGameConsoleType(gid);
-    	    	break;
+    	    	return;
     	    case "5":
     	    	updateGameRating(gid);
-    	    	break;
+    	    	return;
     	    case "6":
     	    	updateGamePrice(gid);
-    	    	break;
+    	    	return;
     	    case "7":
     	    	updateGameStock(gid);
-    	    	break;
+    	    	return;
     	    case "q":
     	    	return;
     	    	default:
@@ -1403,13 +1406,13 @@ public static void admin_updateSaleMenu(){
     	    switch(choice.toLowerCase()){
     	    case "1":
     	    	inventoryInsertConsole();
-    	    	break;
+    	    	return;
     	    case "2":
     	    	inventoryUpdateConsole();
-    	    	break;
+    	    	return;
     	    case "3":
     	    	inventoryDeleteConsole();
-    	    	break;
+    	    	return;
     	    case "q":
     	    	return;
     	    	default:
@@ -1419,8 +1422,6 @@ public static void admin_updateSaleMenu(){
     }
     
     public static void inventoryInsertConsole(){
-    	System.out.println("Enter the new console's CID: ");
- 	    String cid = scanner.nextLine();
  	    System.out.println("Enter the new console's name: ");
  	    String name = scanner.nextLine();
  	    System.out.println("Enter the new console's price: ");
@@ -1429,7 +1430,6 @@ public static void admin_updateSaleMenu(){
 	    String stock = scanner.nextLine();
  	    System.out.println(wipe);
  	    
- 	    int cidInt = Integer.parseInt(cid);
  	    double priceDub = Double.parseDouble(price);
  	    int stockInt = Integer.parseInt(stock);
 
@@ -1469,13 +1469,13 @@ public static void admin_updateSaleMenu(){
     	    switch(choice.toLowerCase()){
     	    case "1":
     	    	updateConsoleName(name);
-    	    	break;
+    	    	return;
     	    case "2":
     	    	updateConsolePrice(name);
-    	    	break;
+    	    	return;
     	    case "3":
     	    	updateConsoleStock(name);
-    	    	break;
+    	    	return;
     	    case "q":
     	    	return;
     	    	default:
@@ -1498,6 +1498,7 @@ public static void admin_updateSaleMenu(){
     	    	int gidInt = Integer.parseInt(gid);
     	    	String response = sqlProc.updateGameTitle(gidInt, input);
     	    	System.out.println(response);
+    	    	return;
     	    }
     	}
     }
@@ -1515,6 +1516,7 @@ public static void admin_updateSaleMenu(){
     	    	int gidInt = Integer.parseInt(gid);
     	    	String response = sqlProc.updateGameAuthor(gidInt, input);
     	    	System.out.println(response);
+    	    	return;
     	    }
     	}
     }
@@ -1532,6 +1534,7 @@ public static void admin_updateSaleMenu(){
     	    	int gidInt = Integer.parseInt(gid);
     	    	String response = sqlProc.updateGameGenre(gidInt, input);
     	    	System.out.println(response);
+    	    	return;
     	    }
     	}
     }
@@ -1549,6 +1552,7 @@ public static void admin_updateSaleMenu(){
     	    	int gidInt = Integer.parseInt(gid);
     	    	String response = sqlProc.updateGameConsoleType(gidInt, input);
     	    	System.out.println(response);
+    	    	return;
     	    }
     	}
     }
@@ -1567,6 +1571,7 @@ public static void admin_updateSaleMenu(){
     	    	int gidInt = Integer.parseInt(gid);
     	    	String response = sqlProc.updateGameRating(gidInt, newRating);
     	    	System.out.println(response);
+    	    	return;
     	    }
     	}
     }
@@ -1585,6 +1590,7 @@ public static void admin_updateSaleMenu(){
     	    	int gidInt = Integer.parseInt(gid);
     	    	String response = sqlProc.updateGamePrice(gidInt, newPrice);
     	    	System.out.println(response);
+    	    	return;
     	    }
     	}
     }
@@ -1603,6 +1609,7 @@ public static void admin_updateSaleMenu(){
     	    	int gidInt = Integer.parseInt(gid);
     	    	String response = sqlProc.updateGameStock(gidInt, newStock);
     	    	System.out.println(response);
+    	    	return;
     	    }
     	}
     }
@@ -1620,6 +1627,7 @@ public static void admin_updateSaleMenu(){
     	    default:
     	    	String response = sqlProc.updateConsoleName(name, input);
     	    	System.out.println(response);
+    	    	return;
     	    }
     	}
     }
@@ -1637,6 +1645,7 @@ public static void admin_updateSaleMenu(){
     	    default:
     	    	String response = sqlProc.updateConsolePrice(name, newPrice);
     	    	System.out.println(response);
+    	    	return;
     	    }
     	}
     }
@@ -1654,6 +1663,7 @@ public static void admin_updateSaleMenu(){
     	    default:
     	    	String response = sqlProc.updateConsoleStock(name, newStock);
     	    	System.out.println(response);
+    	    	return;
     	    }
     	}
     }

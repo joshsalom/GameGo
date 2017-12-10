@@ -126,10 +126,10 @@ DELIMITER //
 create procedure rentGame(IN newMid INT, IN newGid INT)
 BEGIN
 insert into rentals 
-values (null, newMid, newGid, -999.99, null, null);
+values (null, newMid, newGid, -999.99, null, (SELECT timestampadd(day, 7, (SELECT CURDATE()))));
 update rentals r1
 set price = (select price from games where games.gid=newGid)
-where r1.mid=newMid and r1.gid=newGid and price=-999.99;
+where r1.mid=newMid and r1.gid=newGid and r1.price=-999.99;
 select * from games
 where gid = newGid;
 END //
@@ -378,7 +378,7 @@ select *
 from transactions;
 
 #get archived transactions
-drop procedure if exists vewArchiveTransactions;
+drop procedure if exists viewArchiveTransactions;
 create procedure viewArchiveTransactions()
 select * 
 from archive_transactions;
@@ -602,8 +602,8 @@ order by rid;
 #Search rentals by email
 drop procedure if exists searchRentalsByEmail;
 create procedure searchRentalsByEmail(IN newEmail varchar(50))
-select * from rentals 
-where rentals.email LIKE CONCAT('%', newEmail, '%');
+select * from rentals inner join (memberships inner join users using(uid)) using(mid)
+where email LIKE CONCAT('%', newEmail, '%');
 
 #Search rentals by gid
 drop procedure if exists searchRentalsByGid;
@@ -614,7 +614,7 @@ where rentals.gid LIKE CONCAT('%', newGid, '%');
 #view rented games with the renter's name
 drop procedure if exists viewOverdueRentals;
 create procedure viewOverdueRentals()
-select rid, mid, gid, date_due, users.name
+select rid, rentals.mid, gid, date_due, users.name, users.email
 from rentals
 inner join memberships on memberships.mid = rentals.mid
 inner join users on users.uid = memberships.uid
@@ -636,8 +636,9 @@ select gid, newDiscount, price as origPrice
 from games
 where gid = newGid;
 update games
-set price = price * newDiscount
-where gid = oldGid;
+set price = price - newDiscount
+where gid = newGid;
+select * from sales where gid = newGid and discount = newDiscount;
 END //
 DELIMITER ;
 
@@ -656,10 +657,15 @@ DELIMITER ;
 
 #update sale gid
 drop procedure if exists admin_updateSaleGid;
+delimiter //
 create procedure admin_updateSaleGid(IN oldGid INT, IN newGid INT)
+begin
 update sales
 set gid = newGid
 where gid = oldGid;
+select * from sales where gid = newGid and discount = newDiscount;
+end //
+delimiter ;
 
 #update sale discount
 drop procedure if exists admin_updateSaleDiscount;
@@ -708,9 +714,9 @@ DELIMITER ;
 
 #remove console
 drop procedure if exists inventoryDeleteConsole;
-create procedure inventoryDeleteConsole(IN oldCid INT)
+create procedure inventoryDeleteConsole(IN oldName varchar(50))
 delete from consoles
-where gid = oldCid;
+where name = oldName;
 
 
 #update game title
@@ -767,7 +773,7 @@ where gid = oldGid;
 drop procedure if exists updateConsoleName;
 create procedure updateConsoleName(IN oldName varchar(50), IN newName varchar(50))
 update consoles
-set title = newName
+set name = newName
 where name = oldName;
 
 drop procedure if exists updateConsolePrice;
